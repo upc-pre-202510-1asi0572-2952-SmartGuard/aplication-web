@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen">
-    <SideBar/>
+    <SidebarComponent/>
     <main class="w-[85%] bg-gray-100">
       <HomeSpace/>
     </main>
@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import SideBar from '../components/home/SideBar.vue';
+import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue';
 import HomeSpace from '../components/HomeSpace.vue';
 
 export default {
   components:{
-    SideBar,
+    SidebarComponent,
     Button,
     HomeSpace
   }

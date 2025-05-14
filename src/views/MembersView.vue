@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-screen">
-        <!-- Sidebar: 15% del ancho -->
-        <SideBar />
+        <!-- SidebarComponent: 15% del ancho -->
+        <SidebarComponent />
 
         <!-- Contenido principal: 85% restante -->
         <main class="w-[85%] p-6 bg-gray-200 overflow-y-scroll">
@@ -58,7 +58,7 @@
 
 
 <script lang="ts">
-import SideBar from '../components/home/SideBar.vue';
+import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue'
 import profile1 from '../assets/profile.png';
 import profile2 from '../assets/profile2.png';
@@ -67,7 +67,7 @@ import profile3 from '../assets/profile3.png'
 export default {
     components: {
         Button,
-        SideBar
+        SidebarComponent
     },
     data() {
         return {

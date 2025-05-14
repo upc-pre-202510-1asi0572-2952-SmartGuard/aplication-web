@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col md:flex-row h-full min-h-screen bg-gray-100">
-        <SideBar class="w-full md:w-[15%]" />
+        <SidebarComponent class="w-full md:w-[15%]" />
 
         <main class="w-full lg:w-[85%] mx-auto p-6 bg-gray-200 flex flex-col gap-10 text-black">
 
@@ -84,12 +84,12 @@
 
 
 <script>
-import SideBar from '../components/home/SideBar.vue';
+import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue';
 
 export default {
     components: {
-        SideBar,
+        SidebarComponent,
         Button
     },
     methods: {
