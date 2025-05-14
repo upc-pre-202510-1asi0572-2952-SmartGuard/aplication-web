@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SideBar from '../components/home/sidebar.vue';
+import SideBar from '../components/home/SideBar.vue';
 import Button from '../components/shared/Button.vue';
 import HomeSpace from '../components/HomeSpace.vue';
 

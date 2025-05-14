@@ -58,7 +58,7 @@
 
 
 <script lang="ts">
-import SideBar from '../components/home/sidebar.vue';
+import SideBar from '../components/home/SideBar.vue';
 import Button from '../components/shared/Button.vue'
 import profile1 from '../assets/profile.png';
 import profile2 from '../assets/profile2.png';

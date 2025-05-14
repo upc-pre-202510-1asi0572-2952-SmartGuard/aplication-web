@@ -97,7 +97,7 @@
 
 <script lang="ts">
 import Button from '../components/shared/Button.vue'
-import SideBar from '../components/home/sidebar.vue';
+import SideBar from '../components/home/SideBar.vue';
 
 
 export default {
