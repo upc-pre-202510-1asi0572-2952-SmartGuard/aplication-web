@@ -11,8 +11,8 @@ import MembershipView from "../views/MembershipView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "", redirect: "login" },
-    { path: "/splash", name: "Splash", component: SplashView },
+    { path: "", redirect: "splashview" },
+    { path: "/splashview", name: "splashview", component: SplashView },
     { path: "/login", name: "login", component: LoginView },
     { path: "/configuration", name: "configuration", component: ConfigurationView },
     { path: "/home", name: "home", component: HomeView },
@@ -20,7 +20,7 @@ const router = createRouter({
     { path: "/members", name: "Members", component: MembersView },
     { path: "/stadisticas", name: "stadisticas", component: StadisticView },
     { path: "/membership", name: "Membership", component: MembershipView },
-    { path: "/splashview", name: "splashview", component: SplashView },
+
     // { path: "/about", name: "about", component: AboutView },
   ]
 

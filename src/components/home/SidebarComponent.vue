@@ -23,7 +23,6 @@
       <div class="flex flex-col gap-4 px-6 font-medium">
         <LinkButton text="Hogar" iconClass="pi pi-home" route="/home"/>
         <LinkButton text="Accesos" iconClass="pi pi-clone" route="/home"/>
-        <LinkButton text="Dispositivos" iconClass="pi pi-mobile" route="/home" />
         <LinkButton text="Miembros" iconClass="pi pi-users" route="/members"/>
         <LinkButton text="Estadísticas" iconClass="pi pi-chart-line" route="/stadisticas"/>
         <div class="border-t my-2"></div>
