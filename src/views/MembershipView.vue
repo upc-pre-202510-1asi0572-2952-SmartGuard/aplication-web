@@ -23,23 +23,23 @@
                         <div class="border-b-black border-b-2 my-8"></div>
                         <div class="flex flex-col gap-8 mt-4 ">
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" />
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" />
                                 <span>Monitoreo </span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>2
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>2
                                     Miembros </span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>
                                     Sin consultas de historial de acceso</span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>
                                     Sin sonido de alerta</span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>
                                     Sonido de bloqueos limitados</span>
                             </div>
                             <Button class="font-semibold" _texto = "Plan actual"/>
@@ -54,24 +54,24 @@
                         <div class="border-b-black border-b-2 my-8"></div>
                         <div class="flex flex-col gap-8 mt-4 ">
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" />
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" />
                                 <span>Monitoreo en tiempo real </span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>
                                     Miembros ilimitados </span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>Sonido
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>Sonido
                                     Historial de acceso
                                     ilimitado</span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>Sonido
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>Sonido
                                     Sonido de alerta</span>
                             </div>
                             <div class="flex flex-row items-center gap-2">
-                                <img class="h-6 w-6" src="../assets/checkicon.png" alt="icon" /><span>Sonido
+                                <img class="h-6 w-6" src="../assets/check.png" alt="icon" /><span>Sonido
                                     Bloqueos ilimitados</span>
                             </div>
                             <Button class="font-semibold"  _texto = "Conseguir plan" />
