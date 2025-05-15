@@ -32,10 +32,10 @@ export default {
     },
     data() {
         return {
-            Accesos:2,
-            Miembros:20,
+            Accesos:15,
+            Miembros:4,
             Dispositivos:1,
-            Incidentes:2
+            Incidentes:0
         }
     }
 }
