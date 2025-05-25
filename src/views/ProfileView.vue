@@ -4,8 +4,8 @@
         <SidebarComponent />
 
         <!-- Contenido principal: 85% restante -->
-        <main class="w-[85%] p-6 bg-gray-100">
-            <div class=" max-w-6xl mx-auto px-4 py-8">
+        <main class="w-[85%] p-6 bg-gray-100 overflow-y-scroll">
+            <div class=" max-w-6xl mx-auto py-8">
                 <h2 class="text-4xl font-black mb-8 text-black">Perfil de usuario</h2>
                 <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div class="flex justify-center">

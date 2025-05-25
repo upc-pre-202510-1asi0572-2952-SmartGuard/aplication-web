@@ -9,7 +9,7 @@
             <div class="max-w-6xl bg-gray-100 shadow-2xl mx-auto px-8 py-8 text-black rounded-3xl">
                 <h2 class="text-4xl font-black mb-8">Miembros</h2>
                 <div class="flex flex-col sm:flex-row justify-between gap-4 ">
-                    <p class="w-md text-xl font-light">Gestiona y controlar el acceso de todos los miembros que tienen
+                    <p class="lg:w-md text-xl font-light ">Gestiona y controlar el acceso de todos los miembros que tienen
                         permiso
                         para acceder a tu hogar</p>
                     <div class="flex flex-col lg:w-md gap-4">
