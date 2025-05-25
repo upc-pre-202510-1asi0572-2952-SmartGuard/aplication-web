@@ -6,7 +6,7 @@
             style="clip-path: polygon(0 0, 0 100%, 100% 100%);"></div>
 
         <section class=" bg-gray-300 flex justify-end overflow-hidden">
-            <img class="block h-fit mt-[50px]" src="../../assets/House.png" />
+            <img class="block h-fit mt-[50px]" src="../../assets/house.webp" />
         </section>
         <section class="absolute bottom-0 w-full flex justify-center sm:justify-start">
             <div class="text-center max-w-sm sm:text-start sm:max-w-lg  p-12">
