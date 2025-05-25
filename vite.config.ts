@@ -13,10 +13,10 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
-      //solo para desarrollo
-      devOptions: {
-        enabled: true
-      },
+      //Para ver los archivos del worker
+      // devOptions: {
+      //   enabled: true
+      // },
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'Smartguard App',
