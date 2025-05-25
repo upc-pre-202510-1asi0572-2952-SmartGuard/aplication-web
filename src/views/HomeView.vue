@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen">
     <SidebarComponent />
-    <main class="w-[85%] bg-gray-100 overflow-y-scroll">
+    <main class="w-[85%] bg-gray-100 overflow-y-scroll px-8">
       <InitHomeSpace v-if="currentView === 'init'" @next="showHome" />
       <HomeSpace v-else @back="showInit" />
     </main>

@@ -1,13 +1,14 @@
 <template>
-    <div class="flex flex-col md:flex-row h-full min-h-screen bg-gray-100">
-        <SidebarComponent class="w-full md:w-[15%]" />
-        <main class="w-full lg:w-[85%] flex flex-col justify-center items-center gap-10 text-black">
-            <div class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl">
-                <StatisticFilter/>
-                <InfoData :accesos="Accesos" :miembros="Miembros" :dispositivos="Dispositivos" :incidentes="Incidentes" />
-                <div class="flex flex-col lg:flex-row justify-between gap-10 items-start">
-                    <LineChart/>
-                    <DonutChart/>
+    <div class="flex h-screen">
+        <SidebarComponent />
+        <main class="w-[85%] bg-gray-100 overflow-y-scroll px-8 text-black">
+            <div class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl mx-auto mt-8">
+                <StatisticFilter />
+                <InfoData :accesos="Accesos" :miembros="Miembros" :dispositivos="Dispositivos"
+                    :incidentes="Incidentes" />
+                <div class="flex flex-col lg:flex-row justify-between gap-10 items-start overflow-x-scroll lg:overflow-auto">
+                    <LineChart />
+                    <DonutChart />
                 </div>
             </div>
         </main>
@@ -32,10 +33,10 @@ export default {
     },
     data() {
         return {
-            Accesos:2,
-            Miembros:20,
-            Dispositivos:1,
-            Incidentes:2
+            Accesos: 15,
+            Miembros: 4,
+            Dispositivos: 1,
+            Incidentes: 0
         }
     }
 }
