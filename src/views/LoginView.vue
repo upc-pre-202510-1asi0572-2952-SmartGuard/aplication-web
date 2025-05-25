@@ -3,7 +3,7 @@
 
     <!-- Sección Izquierda -->
     <section class="w-full md:w-1/2 bg-gray-100 flex flex-col items-center justify-center p-8">
-      <img class="mb-6 xl:w-2xl md:w-60" src="../assets/smart-home/house.webp" alt="Logo" />
+      <img class="mb-6 xl:w-2xl md:w-60" src="../assets/smart-home/house-smart.png" alt="Logo" />
       <div class="text-center max-w-sm">
         <h1 class="uppercase font-bold text-xl mb-2">
           Más que seguridad, tranquilidad inteligente en tu hogar
