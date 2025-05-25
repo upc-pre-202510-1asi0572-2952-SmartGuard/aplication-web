@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full px-8">
     <!-- Header -->
     <div
-      class="bg-[#2A3240] flex flex-row justify-between items-center gap-4 p-8 text-xl rounded-b-4xl lg:rounded-none">
+      class="bg-[#2A3240] flex  flex-col sm:flex-row justify-between items-center gap-4 p-8 text-xl rounded-b-4xl lg:rounded-none">
       <Button _color="bg-[#555B66]" _texto="Regresar" @click="$emit('back')" />
       <div>
         <h2 class="text-center text-4xl font-black mb-8">Registrar un nuevo hogar</h2>
@@ -16,7 +16,7 @@
 
     <!-- Content -->
     <div class="relative flex flex-col items-center gap-4 text-xl pb-8 text-black">
-      <img class="h-full w-auto block mt-4 px-4 mb-4 z-10" src="../assets/homeRegister.png" alt="icon" />
+      <img class="h-full w-auto block mt-4 px-4 mb-4 z-10" src="../assets/homeregister.webp" alt="icon" />
       <div class="absolute rounded-b-4xl top-0 w-full lg:pb-24 bg-[#2A3240]"></div>
 
       <p>¿Cuál es el nombre de tu hogar?</p>
