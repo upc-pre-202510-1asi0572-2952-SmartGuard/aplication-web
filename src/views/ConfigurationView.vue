@@ -1,14 +1,7 @@
 <template>
-    <div class="flex h-screen">
-        <SidebarComponent />
-
-        <main class="w-full lg:w-[85%] mx-auto p-6 bg-gray-200 flex flex-col gap-10 text-black overflow-y-scroll">
-
-            <div class=" flex flex-col gap-10">
-
-
+    <WrapperScreen>
+          <div class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl">
                 <h1 class="text-3xl font-semibold">Configuración</h1>
-
                 <section class="shadow-md p-4 bg-white rounded-xl flex flex-col gap-6">
                     <h2 class="text-2xl font-semibold">Alertas</h2>
                     <div class="flex flex-col gap-4">
@@ -72,10 +65,10 @@
                         <Button _texto="Guardar Cambios" _color="bg-blue-600" />
                     </div>
                 </section>
-
             </div>
-        </main>
-    </div>
+
+    </WrapperScreen>
+
 </template>
 
 
@@ -84,11 +77,13 @@
 <script>
 import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue';
+import WrapperScreen from '../components/WrapperScreen.vue';
 
 export default {
     components: {
         SidebarComponent,
-        Button
+        Button,
+        WrapperScreen
     },
     methods: {
         prueba() {
