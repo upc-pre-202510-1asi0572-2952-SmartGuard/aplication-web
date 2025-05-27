@@ -83,12 +83,12 @@
           <InputTexto
               _placeholder="Número de Habitaciones"
               type="number"
-              v-model.number="home.bedrooms"
+              v-model="home.bedrooms"
           />
           <InputTexto
               _placeholder="Número de Baños"
               type="number"
-              v-model.number="home.bathrooms"
+              v-model="home.bathrooms"
           />
         </div>
 

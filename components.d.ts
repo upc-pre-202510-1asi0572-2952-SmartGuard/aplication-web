@@ -12,7 +12,6 @@ declare module 'vue' {
     Button: typeof import('./src/components/shared/Button.vue')['default']
     Chart: typeof import('primevue/chart')['default']
     DonutChart: typeof import('./src/components/statistics/DonutChart.vue')['default']
-    HomeView: typeof import('./src/components/HomeView.vue')['default']
     InfoData: typeof import('./src/components/statistics/InfoData.vue')['default']
     IngreseConApple: typeof import('./src/components/login/IngreseConApple.vue')['default']
     IngreseConFacebook: typeof import('./src/components/login/IngreseConFacebook.vue')['default']
