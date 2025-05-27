@@ -1,7 +1,7 @@
 <template>
-    <div class="px-4 py-5 flex flex-col gap-4 bg-white shadow-2xl rounded-lg flex-1 min-w-[300px]">
+    <div class="px-4 py-5 flex flex-col gap-4 bg-white shadow-2xl rounded-lg flex-1/2">
         <h2 class="text-lg font-semibold">Accesos por miembro</h2>
-        <Chart type="doughnut" :data="chartData" :options="chartOptions2" class="w-full h-[300px] lg:w-[18rem]" />
+        <Chart type="doughnut" :data="chartData" :options="chartOptions2" class="md:max-w-[300px]" />
     </div>
 </template>
 
