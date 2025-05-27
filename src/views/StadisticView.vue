@@ -3,7 +3,7 @@
         <div class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl">
             <StatisticFilter />
             <InfoData :accesos="Accesos" :miembros="Miembros" :dispositivos="Dispositivos" :incidentes="Incidentes" />
-            <div class="flex flex-col lg:flex-row justify-between gap-8 items-start">
+            <div class="flex flex-col lg:flex-row justify-between gap-4">
                 <LineChart />
                 <DonutChart />
             </div>

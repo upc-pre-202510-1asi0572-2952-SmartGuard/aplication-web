@@ -34,7 +34,7 @@
         <!-- Paso 1: Nombre del hogar -->
         <div v-if="step === 1" class="flex flex-col items-center gap-6">
           <p class="text-center">¿Cuál es el nombre de tu hogar?</p>
-          <InputTexto class="w-md" _placeholder="Nombre de la vivienda" v-model="formData.name" />
+          <InputTexto class="w-[300px]" _placeholder="Nombre de la vivienda" v-model="formData.name" />
           <p class="text-center">Sin inspiración? Intenta uno de estos nombres</p>
           <div class="flex flex-row justify-center flex-wrap gap-4">
             <Button type="button" _texto="Casa actual" class="rounded-4xl" @click="setName('Casa actual')" />
@@ -63,7 +63,7 @@
 
       <!-- Botón inferior -->
       <div class="rounded-4xl bg-white p-6 shadow-2xl">
-        <Button class="w-sm" _color="bg-blue-500" :_texto="step < 3 ? 'Siguiente' : 'Finalizar Registro'"
+        <Button class="w-[300px]" _color="bg-blue-500" :_texto="step < 3 ? 'Siguiente' : 'Finalizar Registro'"
           @click="handleSubmit" />
       </div>
     </div>

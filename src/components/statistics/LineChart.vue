@@ -1,7 +1,7 @@
 <template>
-    <div class="px-4 py-5 flex flex-col gap-4 bg-white shadow-2xl rounded-lg flex-1 min-w-[300px]">
+    <div class="px-4 py-5 flex flex-col gap-4 bg-white shadow-2xl rounded-lg flex-1/2">
         <h2 class="text-lg font-semibold">Accesos por día</h2>
-        <Chart type="line" :data="chartData" :options="chartOptions" class="w-full h-[300px]" />
+        <Chart type="line" :data="chartData" :options="chartOptions" class="md:max-w-[350px]" />
     </div>
 </template>
 
