@@ -8,10 +8,13 @@ import ConfigurationView from "../views/ConfigurationView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import MembersView from "../views/MembersView.vue";
 import MembershipView from "../views/MembershipView.vue";
+import RecoverPasswordView from "../views/RecoverPasswordView.vue";
+import RegisterView from "../views/RegisterView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "", redirect: "splashview" },
+    { path: "/recoverpassword", name: "recoverpassword", component: RecoverPasswordView },
     { path: "/splashview", name: "splashview", component: SplashView },
     { path: "/login", name: "login", component: LoginView },
     { path: "/configuration", name: "configuration", component: ConfigurationView },
@@ -20,6 +23,7 @@ const router = createRouter({
     { path: "/members", name: "Members", component: MembersView },
     { path: "/stadisticas", name: "stadisticas", component: StadisticView },
     { path: "/membership", name: "Membership", component: MembershipView },
+    { path: "/register", name: "register", component: RegisterView },
 
     // { path: "/about", name: "about", component: AboutView },
   ]

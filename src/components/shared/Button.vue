@@ -11,7 +11,7 @@ export default {
     props: {
         _texto: {
             type: String,
-            default: "Ingresar"
+            default: ""
         },
         _color: {
             type: String,
