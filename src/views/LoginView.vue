@@ -34,32 +34,44 @@
             />
           </div>
 
-          <div class="flex flex-col">
+          <div class="flex flex-col relative">
             <label class="mb-1">Contraseña</label>
             <input
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 v-model="loginPassword"
                 placeholder="Contraseña"
-                class="border border-gray-300 rounded-lg px-3 py-2"
+                class="border border-gray-300 rounded-lg px-3 py-2 pr-10"
             />
+            <button
+                type="button"
+                @click="togglePasswordVisibility"
+                class="absolute right-3 top-9 text-gray-500 focus:outline-none"
+            >
+              <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 3C5 3 1.73 7.11 1 10c.73 2.89 4 7 9 7s8.27-4.11 9-7c-.73-2.89-4-7-9-7zm0 12a5 5 0 110-10 5 5 0 010 10z" />
+                <path d="M10 7a3 3 0 100 6 3 3 0 000-6z" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M4.03 3.97a.75.75 0 10-1.06 1.06l1.41 1.41A9.013 9.013 0 001 10c.73 2.89 4 7 9 7 1.86 0 3.59-.5 5.07-1.35l1.41 1.41a.75.75 0 101.06-1.06l-14-14zM10 5c2.76 0 5 2.24 5 5 0 1.17-.38 2.25-1.03 3.12L8.88 7.03A4.978 4.978 0 0110 5z" />
+              </svg>
+            </button>
           </div>
 
-          <div class="text-red-500 text-sm" v-if="errorMessage">
+          <div v-if="errorMessage" class="text-red-500 text-sm">
             {{ errorMessage }}
           </div>
 
           <div class="flex items-center gap-2 mt-2">
-            <input type="checkbox" name="recuerda" id="recuerda"
-                   v-model="rememberMe"
-                   class="accent-blue-600 bg-transparent rounded focus:ring-0 focus:outline-none">
+            <input
+                type="checkbox"
+                id="recuerda"
+                v-model="rememberMe"
+                class="accent-blue-600 bg-transparent rounded focus:ring-0 focus:outline-none"
+            />
             <label for="recuerda" class="text-sm text-gray-700">Recuérdame</label>
           </div>
 
-          <Button
-              _texto="Ingresar"
-              _color="bg-blue-500"
-              @click="onLogin"
-          />
+          <Button _texto="Ingresar" _color="bg-blue-500" @click="onLogin" />
 
           <div class="w-full text-center mt-4">
             <router-link to="/recoverpassword" class="text-blue-500 hover:underline">
@@ -75,9 +87,9 @@
 
           <div class="text-center text-sm">
             <span>¿Primera vez aquí?
-               <router-link to="/register" class="text-blue-500 hover:underline">
-               Regístrate gratis
-               </router-link>
+              <router-link to="/register" class="text-blue-500 hover:underline">
+                Regístrate gratis
+              </router-link>
             </span>
           </div>
         </footer>
@@ -91,7 +103,6 @@
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '../components/shared/Button.vue';
-import InputTexto from '../components/shared/InputTexto.vue';
 import IngreseConGoogle from '../components/login/IngreseConGoolge.vue';
 import IngreseConFacebook from '../components/login/IngreseConFacebook.vue';
 import IngreseConApple from '../components/login/IngreseConApple.vue';
@@ -109,8 +120,13 @@ export default defineComponent({
     const router = useRouter();
     const loginEmail = ref('');
     const loginPassword = ref('');
+    const showPassword = ref(false);
     const errorMessage = ref('');
     const rememberMe = ref(false);
+
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value;
+    };
 
     const onLogin = async () => {
       errorMessage.value = '';
@@ -125,7 +141,6 @@ export default defineComponent({
           errorMessage.value = 'Email o contraseña incorrectos';
           return;
         }
-        // Opcional: guardar sesión
         if (rememberMe.value) {
           localStorage.setItem('loggedUser', JSON.stringify(match));
         }
@@ -139,6 +154,8 @@ export default defineComponent({
     return {
       loginEmail,
       loginPassword,
+      showPassword,
+      togglePasswordVisibility,
       rememberMe,
       errorMessage,
       onLogin

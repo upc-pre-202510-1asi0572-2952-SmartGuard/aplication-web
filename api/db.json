@@ -1,4 +1,76 @@
 {
+  "homes": [
+    {
+      "id": 1,
+      "name": "Casa Los Pinos",
+      "address": "Av. Los Álamos 45, San Isidro, Lima, Perú",
+      "propertyType": "Casa",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "heating": true,
+      "waterSupply": "Agua Potable",
+      "internetProvider": "Claro",
+      "securitySystem": "Cámaras CCTV y sensor de movimiento",
+      "smartFeatures": 8,
+      "photoURL": "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/FJYA5LJ4PNEIVNBUDMQ66KV6UQ.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Departamento Vista Mar",
+      "address": "Malecón de la Reserva 123, Miraflores, Lima, Perú",
+      "propertyType": "Departamento",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "heating": false,
+      "waterSupply": "Agua Potable",
+      "internetProvider": "Movistar",
+      "securitySystem": "Alarma perimetral",
+      "smartFeatures": 5,
+      "photoURL": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
+    },
+    {
+      "id": 3,
+      "name": "Quinta Verde",
+      "address": "Camino Real 78, Chaclacayo, Lima, Perú",
+      "propertyType": "Casa de campo",
+      "bedrooms": 6,
+      "bathrooms": 4,
+      "heating": true,
+      "waterSupply": "Pozo profundo",
+      "internetProvider": "Entel",
+      "securitySystem": "Cámaras y alarma integrada",
+      "smartFeatures": 12,
+      "photoURL": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
+    },
+    {
+      "id": 4,
+      "name": "Loft Urbano",
+      "address": "Jirón Junín 456, Cercado de Lima, Lima, Perú",
+      "propertyType": "Loft",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "heating": false,
+      "waterSupply": "Agua Potable",
+      "internetProvider": "Fibertel",
+      "securitySystem": "Sensor de humo",
+      "smartFeatures": 3,
+      "photoURL": "https://media.istockphoto.com/id/157193895/es/foto/la-hermosa-piscina-en-una-finca-hogar.jpg?s=612x612&w=0&k=20&c=9SY3IDt3vmyAlr2_O58d5s5kNlhoYYNl6M6GaGPcjJs="
+    },
+    {
+      "id": "0a8a",
+      "name": "Quijamarca",
+      "address": "La calle Real 23",
+      "propertyType": "Casa",
+      "bedrooms": 4,
+      "bathrooms": 1,
+      "heating": true,
+      "waterSupply": "Sedapal",
+      "internetProvider": "Movistar",
+      "securitySystem": "Prosegur",
+      "smartFeatures": 6,
+      "photoURL": "https://images.adsttc.com/media/images/5937/1c5b/e58e/cecb/6a00/0065/newsletter/E6.jpg?1496783955"
+    }
+  ],
   "users": [
     {
       "id": "cdb7",

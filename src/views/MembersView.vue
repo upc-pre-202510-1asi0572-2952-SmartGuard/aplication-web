@@ -38,22 +38,9 @@
     </WrapperScreen>
 </template>
 
-
-
-
-
-
-
-
-
-
-
 <script lang="ts">
 import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue'
-import profile1 from '../assets/profile.png';
-import profile2 from '../assets/profile2.png';
-import profile3 from '../assets/profile3.png'
 import WrapperScreen from '../components/WrapperScreen.vue';
 import type {Member} from "../interfaces/Member.ts";
 
@@ -86,7 +73,5 @@ export default {
     }
 }
 </script>
-
-
 
 <style scopeed></style>
