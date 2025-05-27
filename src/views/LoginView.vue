@@ -24,18 +24,42 @@
         </header>
 
         <main class="flex flex-col gap-4">
-          <InputTexto _placeholder="joe.doe@gmail.com" :_onClick="handleClick" />
-          <InputTexto _placeholder="Contraseña" :_onClick="handleClick" />
+          <div class="flex flex-col">
+            <label class="mb-1">Correo electrónico</label>
+            <input
+                type="email"
+                v-model="loginEmail"
+                placeholder="joe.doe@gmail.com"
+                class="border border-gray-300 rounded-lg px-3 py-2"
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1">Contraseña</label>
+            <input
+                type="password"
+                v-model="loginPassword"
+                placeholder="Contraseña"
+                class="border border-gray-300 rounded-lg px-3 py-2"
+            />
+          </div>
+
+          <div class="text-red-500 text-sm" v-if="errorMessage">
+            {{ errorMessage }}
+          </div>
 
           <div class="flex items-center gap-2 mt-2">
             <input type="checkbox" name="recuerda" id="recuerda"
-              class="accent-blue-600 bg-transparent rounded focus:ring-0 focus:outline-none">
+                   v-model="rememberMe"
+                   class="accent-blue-600 bg-transparent rounded focus:ring-0 focus:outline-none">
             <label for="recuerda" class="text-sm text-gray-700">Recuérdame</label>
           </div>
 
-          <router-link to="/home" class="contents">
-            <Button _texto="Ingresar" _color="bg-blue-500" />
-          </router-link>
+          <Button
+              _texto="Ingresar"
+              _color="bg-blue-500"
+              @click="onLogin"
+          />
 
           <div class="w-full text-center mt-4">
             <router-link to="/recoverpassword" class="text-blue-500 hover:underline">
@@ -50,7 +74,7 @@
           <IngreseConApple _texto="Ingrese con Apple" />
 
           <div class="text-center text-sm">
-            <span>¿Primera vez aquí? 
+            <span>¿Primera vez aquí?
                <router-link to="/register" class="text-blue-500 hover:underline">
                Regístrate gratis
                </router-link>
@@ -63,41 +87,64 @@
   </section>
 </template>
 
-
-
-
-
-
-
-
-
-
-
-
 <script lang="ts">
-import Button from '../components/shared/Button.vue'
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Button from '../components/shared/Button.vue';
 import InputTexto from '../components/shared/InputTexto.vue';
 import IngreseConGoogle from '../components/login/IngreseConGoolge.vue';
 import IngreseConFacebook from '../components/login/IngreseConFacebook.vue';
 import IngreseConApple from '../components/login/IngreseConApple.vue';
+import type { User } from '../interfaces/User';
 
-
-export default {
+export default defineComponent({
+  name: 'LoginView',
   components: {
     Button,
-    InputTexto,
     IngreseConGoogle,
-    IngreseConApple,
-    IngreseConFacebook
+    IngreseConFacebook,
+    IngreseConApple
   },
-  methods: {
-    handleClick() {
-      console.log("Botón clickeado desde la vista")
-    }
+  setup() {
+    const router = useRouter();
+    const loginEmail = ref('');
+    const loginPassword = ref('');
+    const errorMessage = ref('');
+    const rememberMe = ref(false);
+
+    const onLogin = async () => {
+      errorMessage.value = '';
+      try {
+        const res = await fetch('http://localhost:3000/users');
+        if (!res.ok) throw new Error('Error obteniendo usuarios');
+        const users: User[] = await res.json();
+        const match = users.find(
+            u => u.email === loginEmail.value && u.password === loginPassword.value
+        );
+        if (!match) {
+          errorMessage.value = 'Email o contraseña incorrectos';
+          return;
+        }
+        // Opcional: guardar sesión
+        if (rememberMe.value) {
+          localStorage.setItem('loggedUser', JSON.stringify(match));
+        }
+        router.push('/home');
+      } catch (e) {
+        console.error(e);
+        errorMessage.value = 'No se pudo iniciar sesión. Intenta de nuevo.';
+      }
+    };
+
+    return {
+      loginEmail,
+      loginPassword,
+      rememberMe,
+      errorMessage,
+      onLogin
+    };
   }
-}
+});
 </script>
 
-
-
-<style scopeed></style>
+<style scoped></style>

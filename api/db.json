@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": "cdb7",
+      "nombres": "Josue",
+      "apellidos": "Ramos",
+      "email": "pepo",
+      "telefono": "986543245",
+      "ubicacion": "Peru",
+      "direccion": "La paz",
+      "fechadenacimiento": "2003-03-12",
+      "genero": "Masculino",
+      "ocupacion": "Periodista",
+      "foto": "https://img.freepik.com/foto-gratis/nunca-escuche-broma-mejor-hombre-guapo-feliz-camiseta-roja-casual-pulgar-arriba_176420-24336.jpg?semt=ais_hybrid&w=740",
+      "password": "hola",
+      "confirmpassword": "hola",
+      "terminos": true
+    }
+  ],
+  "members": [
+    {
+      "id": 1,
+      "nombre": "Sofia Perez",
+      "edad": 45,
+      "rol": "Administradora",
+      "parentesco": "Madre",
+      "descripcion": "Soy Sofia, soy la encargada de cuidar este hogar por medio de mi consentimiento de acceso",
+      "foto": "https://st4.depositphotos.com/10932024/25011/i/450/depositphotos_250111206-stock-photo-outdoor-portrait-of-positive-confident.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Carlos Ramirez",
+      "edad": 17,
+      "rol": "Miembro",
+      "parentesco": "Hijo",
+      "descripcion": "Soy Carlos, uso la app para entrar a casa después de la escuela",
+      "foto": "https://media.istockphoto.com/id/1158014305/es/foto/disparo-a-la-cabeza-de-un-adolescente.jpg?s=612x612&w=0&k=20&c=_CExHleR5PiSV-Wwa6i7mk-2LZVJk4tOWCdUbb2mUzU="
+    },
+    {
+      "id": 3,
+      "nombre": "Alejandro Salas",
+      "edad": 18,
+      "rol": "Miembro",
+      "parentesco": "Hijo",
+      "descripcion": "Soy Alejandro y necesito acceso a la casa a altas horas de la noche por mis turnos de trabajo",
+      "foto": "https://media.istockphoto.com/id/1323167284/es/foto/joven-indio-exitoso-con-elegantes-anteojos-de-pie-en-la-calle-guapo-modelo-asi%C3%A1tico-posando.jpg?s=612x612&w=0&k=20&c=oug8WEXKK_e7cJPPJ7EqUc1yq2_tVQpeNTl1_2B-DZo="
+    }
+  ]
+}

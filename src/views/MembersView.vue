@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="flex flex-col gap-4 mt-8">
-                <div v-for="(miembro, index) in miembros" :key="index"
+              <div v-for="miembro in miembros" :key="miembro.id"
                     class="border-2 border-black hover:bg-[#74B4FF] duration-200 ease-in-out cursor-pointer text-2xl font-light text-black grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4 bg-[#D1E6FF] rounded-4xl p-8 lg:h-[240px]">
 
                     <div class="flex justify-center items-center lg:justify-start">
@@ -55,49 +55,29 @@ import profile1 from '../assets/profile.png';
 import profile2 from '../assets/profile2.png';
 import profile3 from '../assets/profile3.png'
 import WrapperScreen from '../components/WrapperScreen.vue';
+import type {Member} from "../interfaces/Member.ts";
+
 export default {
-    components: {
+  name: 'MembersView',
+
+  components: {
         Button,
         SidebarComponent,
         WrapperScreen
     },
     data() {
         return {
-            miembros: [
-                {
-                    nombre: "Sofia Perez",
-                    edad: 45,
-                    rol: "Administradora",
-                    parentesco: "Madre",
-                    descripcion: "Soy Sofia, soy la encargada de cuidar este hogar por medio de mi consentimiendo de acceso",
-                    foto: profile1
-                },
-                {
-                    nombre: "Carlos Ramirez",
-                    edad: 17,
-                    rol: "Miembro",
-                    parentesco: "Hijo",
-                    descripcion: "Soy Carlos, uso la app para entrar a casa después de la escuela",
-                    foto: profile2
-                },
-                {
-                    nombre: "Alejandro Salas",
-                    edad: 18,
-                    rol: "Miembro",
-                    parentesco: "Hijo",
-                    descripcion: "Soy Alejandro y soy hijo de la familia, trabajo y llego tarde a casa, por ende necesito acceso a altas horas de la noche",
-                    foto: profile3
-                },
-                {
-                    nombre: "Pedro Casas",
-                    edad: 19,
-                    rol: "Miembro",
-                    parentesco: "Hijo",
-                    descripcion: "Soy Pedro y soy hijo de la familia, estudio diariamente y tengo turnos tempranos, necesito acceso generalmente por las tardes",
-                    foto: profile3
-                }
-            ]
+          miembros: [] as Member[],
         }
+    },
+    async mounted() {
+      try {
+        const res = await fetch('http://localhost:3000/members');
+        if (!res.ok) throw new Error('Error al cargar miembros');
+        this.miembros = await res.json();
+      } catch (error) {
+        console.error(error);
+      }
     },
     methods: {
         handleClick() {

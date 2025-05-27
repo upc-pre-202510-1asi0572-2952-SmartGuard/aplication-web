@@ -13,29 +13,40 @@
       <nav class="flex md:flex-col gap-4 whitespace-nowrap" role="navigation">
         <!-- Usuario -->
         <div class="px-2 flex flex-row justify-start gap-2 items-center">
-          <img src="../../assets/common/joven.jpg" alt="Foto de perfil"
-            class="w-6 h-6 object-cover rounded-full shadow-md" />
+          <img
+              v-if="currentUser"
+              :src="currentUser.foto"
+              alt="Foto de perfil"
+              class="w-6 h-6 object-cover rounded-full shadow-md"
+          />
           <div class="hidden lg:flex flex-col gap-0">
-            <span class="text-gray-600 text-sm">Bienvenida a casa,</span>
-            <span class="text-black font-bold">Julia</span>
+            <span class="text-gray-600 text-sm">Bienvenido a casa,</span>
+            <span class="text-black font-bold">{{ currentUser?.nombres }}</span>
           </div>
         </div>
-        <LinkButton v-for="(link, i) in links" :key="i" :text="link.text" :iconClass="link.iconClass"
-          :route="link.route" class="min-w-max" />
+        <LinkButton
+            v-for="(link, i) in links"
+            :key="i"
+            :text="link.text"
+            :iconClass="link.iconClass"
+            :route="link.route"
+            class="min-w-max"
+        />
       </nav>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue';
 import LinkButton from './LinkButton.vue';
 import Button from '../shared/Button.vue';
+import type {User} from "../../interfaces/User.ts";
 
 interface Link {
-  text: string
-  iconClass: string
-  route: string
+  text: string;
+  iconClass: string;
+  route: string;
 }
 
 const links = ref<Link[]>([
@@ -47,37 +58,42 @@ const links = ref<Link[]>([
   { text: 'Configuraciones', iconClass: 'pi pi-cog', route: '/configuration' },
   { text: 'Conseguir Premium', iconClass: 'pi pi-star', route: '/membership' },
   { text: 'Salir', iconClass: 'pi pi-sign-out', route: '/login' }
-])
+]);
 
-const isExpanded = ref(false)
-const isDesktop = ref(window.innerWidth >= 768)
-
+const isExpanded = ref(false);
+const isDesktop = ref(window.innerWidth >= 768);
 const updateWidth = () => {
-  isDesktop.value = window.innerWidth >= 768
-  if (isDesktop.value) isExpanded.value = true
-  else isExpanded.value = false
-}
-
+  isDesktop.value = window.innerWidth >= 768;
+  isExpanded.value = isDesktop.value;
+};
 const toggleMenu = () => {
-  isExpanded.value = !isExpanded.value
-}
+  isExpanded.value = !isExpanded.value;
+};
 
-onMounted(() => {
-  updateWidth()
-  window.addEventListener('resize', updateWidth)
-})
+const currentUser = ref<User | null>(null);
+
+onMounted(async () => {
+  updateWidth();
+  window.addEventListener('resize', updateWidth);
+  try {
+    const res = await fetch('http://localhost:3000/users');
+    if (!res.ok) throw new Error('Error al obtener usuarios');
+    const users: User[] = await res.json();
+    currentUser.value = users[0] || null;
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateWidth)
-})
+  window.removeEventListener('resize', updateWidth);
+});
 </script>
 
 <style scoped>
-/* Opcional: mostrar siempre barra scroll si hay overflow */
 div[role="navigation"]::-webkit-scrollbar {
   height: 6px;
 }
-
 div[role="navigation"]::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 3px;
