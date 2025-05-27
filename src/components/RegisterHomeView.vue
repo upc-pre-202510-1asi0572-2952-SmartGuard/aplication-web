@@ -79,7 +79,7 @@ import router from "../router";
 export default {
   name: 'RegisterHomeView',
   components: { Button, InputTexto },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const step = ref(1)
     const formData = reactive({
       name: '',
