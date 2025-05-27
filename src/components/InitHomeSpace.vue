@@ -8,7 +8,7 @@
         <span class="text-gray-600">Para comenzar, registra un hogar desde el panel principal.</span>
       </div>
       <img src="../assets/smart-home/not-home.png" alt="" />
-      <Button _texto="Registrar Hogar" class="w-md" @click="$emit('next')" />
+      <Button _texto="Registrar Hogar" class="w-[300px]" @click="$emit('next')" />
     </div>
   </div>
 </template>
