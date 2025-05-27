@@ -37,7 +37,11 @@
             <Button _texto="Ingresar" _color="bg-blue-500" />
           </router-link>
 
-          <a href="#" class="text-blue-400 text-center text-sm hover:underline">¿Olvidaste tu contraseña?</a>
+          <div class="w-full text-center mt-4">
+            <router-link to="/recoverpassword" class="text-blue-500 hover:underline">
+              ¿Olvidaste tu contraseña?
+            </router-link>
+          </div>
         </main>
 
         <footer class="flex flex-col gap-3 mt-4">
@@ -47,7 +51,9 @@
 
           <div class="text-center text-sm">
             <span>¿Primera vez aquí? 
-              <a href="https://youtube.com" class="text-blue-500 hover:underline">Regístrate gratis</a>
+               <router-link to="/register" class="text-blue-500 hover:underline">
+               Regístrate gratis
+               </router-link>
             </span>
           </div>
         </footer>
@@ -77,18 +83,18 @@ import IngreseConApple from '../components/login/IngreseConApple.vue';
 
 
 export default {
-    components: {
-        Button,
-        InputTexto,
-        IngreseConGoogle,
-        IngreseConApple,
-        IngreseConFacebook
-    },
-    methods: {
-        handleClick() {
-            console.log("Botón clickeado desde la vista")
-        }
+  components: {
+    Button,
+    InputTexto,
+    IngreseConGoogle,
+    IngreseConApple,
+    IngreseConFacebook
+  },
+  methods: {
+    handleClick() {
+      console.log("Botón clickeado desde la vista")
     }
+  }
 }
 </script>
 
