@@ -1,26 +1,24 @@
 <template>
-  <div class="flex h-screen">
-    <SidebarComponent />
-    <main class="w-[85%] bg-gray-100 overflow-y-scroll px-8">
-      <InitHomeSpace v-if="currentView === 'init'" @next="showHome" />
-      <HomeSpace v-else @back="showInit" />
-    </main>
-  </div>
+  <WrapperScreen>
+    <InitHomeSpace v-if="currentView === 'init'" @next="showHome" />
+    <RegisterHomeView v-else @back="showInit" />
+  </WrapperScreen>
 </template>
 
 <script>
 import { ref } from 'vue';
 import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue';
-import HomeSpace from '../components/HomeSpace.vue';
+import RegisterHomeView from '../components/RegisterHomeView.vue';
 import InitHomeSpace from '../components/InitHomeSpace.vue';
-
+import WrapperScreen from '../components/WrapperScreen.vue';
 export default {
   components: {
     SidebarComponent,
     Button,
-    HomeSpace,
-    InitHomeSpace
+    RegisterHomeView,
+    InitHomeSpace,
+    WrapperScreen,
   },
   setup() {
     const currentView = ref('init');
@@ -42,5 +40,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
