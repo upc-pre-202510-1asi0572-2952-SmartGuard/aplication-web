@@ -69,7 +69,7 @@
     </div>
   </div>
 </template>
-
+<!-- registro  -->
 <script lang="ts">
 import { ref, reactive } from 'vue'
 import Button from '../components/shared/Button.vue'
