@@ -83,12 +83,12 @@
           <InputTexto
               _placeholder="Número de Habitaciones"
               type="number"
-              v-model="home.bedrooms"
+              v-model.number="home.bedrooms"
           />
           <InputTexto
               _placeholder="Número de Baños"
               type="number"
-              v-model="home.bathrooms"
+              v-model.number="home.bathrooms"
           />
         </div>
 
@@ -108,7 +108,8 @@
           />
           <InputTexto
               _placeholder="Proveedor de Internet"
-              v-model="home.internetProvider" />
+              v-model="home.internetProvider"
+          />
           <InputTexto
               _placeholder="Proveedor de Sistema de Seguridad"
               v-model="home.securitySystem"
@@ -122,7 +123,6 @@
               _placeholder="Imagen de la Vivienda (Copiar URL)"
               v-model="home.photoURL"
           />
-
         </div>
       </form>
 
@@ -140,9 +140,10 @@
 </template>
 <!-- registro  -->
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue';
-import Button from '../components/shared/Button.vue';
-import InputTexto from '../components/shared/InputTexto.vue';
+import { defineComponent, ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import Button from './shared/Button.vue'
+import InputTexto from './shared/InputTexto.vue'
 import type {Home} from "../interfaces/Home.ts";
 
 export default defineComponent({
@@ -150,57 +151,82 @@ export default defineComponent({
   components: { Button, InputTexto },
   emits: ['back', 'registered'],
   setup(_, { emit }) {
-    const step = ref(1);
-    const home = reactive<Omit<Home, 'id'>>({
+    const router = useRouter()
+    const step = ref(1)
+
+    const home = reactive<Omit<Home,'id'>>({
       name: '',
       address: '',
       propertyType: '',
-      bedrooms: null as any,
-      bathrooms: null as any,
+      bedrooms: 0,
+      bathrooms: 0,
       heating: false,
       waterSupply: '',
       internetProvider: '',
       securitySystem: '',
-      smartFeatures: null as any,
+      smartFeatures: 0,
       photoURL: ''
-    });
+    })
 
-    const setName = (n: string) => (home.name = n);
-    const prevStep = () => (step.value > 1 ? step.value-- : emit('back'));
-    const nextStep = () => step.value < 3 && step.value++;
-    const handleSubmit = () => (step.value < 3 ? nextStep() : onFinish());
+    const setName   = (n: string) => (home.name = n)
+    const prevStep  = () => (step.value > 1 ? step.value-- : emit('back'))
+    const nextStep  = () => step.value < 3 && step.value++
+    const handleSubmit = () =>
+        step.value < 3 ? nextStep() : onFinish()
 
     const onFinish = async () => {
-      const payload: Omit<Home, 'id'> = {
-        name: home.name,
-        address: home.address,
-        propertyType: home.propertyType,
-        bedrooms: home.bedrooms!,
-        bathrooms: home.bathrooms!,
-        heating: home.heating,
-        waterSupply: home.waterSupply,
+      const listRes = await fetch('http://localhost:3000/homes')
+      if (!listRes.ok) {
+        alert('No se pudo obtener lista de hogares')
+        return
+      }
+      const homes = (await listRes.json()) as Array<{id: string|number}>
+      const numericIds = homes.map(h => Number(h.id))
+          .filter(n => !isNaN(n))
+      const nextId = numericIds.length > 0
+          ? Math.max(...numericIds) + 1
+          : 1
+      const payload: Home = {
+        id:             nextId,
+        name:           home.name,
+        address:        home.address,
+        propertyType:   home.propertyType,
+        bedrooms:       home.bedrooms,
+        bathrooms:      home.bathrooms,
+        heating:        home.heating,
+        waterSupply:    home.waterSupply,
         internetProvider: home.internetProvider,
         securitySystem: home.securitySystem,
-        smartFeatures: home.smartFeatures!,
-        photoURL: home.photoURL
-      };
-      try {
-        const res = await fetch('http://localhost:3000/homes', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error();
-        const newHome: Home = await res.json();
-        emit('registered', newHome);
-      } catch {
-        alert('No se pudo registrar el hogar. Intenta de nuevo.');
+        smartFeatures:  home.smartFeatures,
+        photoURL:       home.photoURL
       }
-    };
 
-    return { step, home, setName, prevStep, handleSubmit };
+      const res = await fetch('http://localhost:3000/homes', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      })
+      if (!res.ok) {
+        alert('No se pudo registrar el hogar. Intenta de nuevo.')
+        return
+      }
+
+      const newHome: Home = await res.json()
+      alert(`Hogar registrado correctamente (id: ${newHome.id})`)
+      router.push({ name: 'Members' })
+    }
+
+    return {
+      step,
+      home,
+      setName,
+      prevStep,
+      handleSubmit
+    }
   }
-});
+})
 </script>
+
+
 
 <style scoped></style>

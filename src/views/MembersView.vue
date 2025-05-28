@@ -7,8 +7,9 @@
                     permiso
                     para acceder a tu hogar</p>
                 <div class="flex flex-col lg:w-md gap-4">
-                    <Button class="font-semibold" _texto="+ Agregar miembros" />
-                    <Button class="font-semibold" _texto="- Eliminar miembros" />
+                  <Button class="font-semibold" _texto="+ Agregar miembros"
+                          @click="goToAdd" />
+                  <Button class="font-semibold" _texto="- Eliminar miembros" />
                 </div>
             </div>
             <div class="flex flex-col gap-4 mt-8">
@@ -69,7 +70,10 @@ export default {
     methods: {
         handleClick() {
             console.log("Botón clickeado desde la vista")
-        }
+        },
+      goToAdd() {
+        this.$router.push({ name: 'AddMember' })
+      }
     }
 }
 </script>
