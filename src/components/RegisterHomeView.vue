@@ -142,8 +142,8 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import Button from '../components/shared/Button.vue'
-import InputTexto from '../components/shared/InputTexto.vue'
+import Button from './shared/Button.vue'
+import InputTexto from './shared/InputTexto.vue'
 import type {Home} from "../interfaces/Home.ts";
 
 export default defineComponent({
