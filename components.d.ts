@@ -20,7 +20,6 @@ declare module 'vue' {
     InputTexto: typeof import('./src/components/shared/InputTexto.vue')['default']
     LineChart: typeof import('./src/components/statistics/LineChart.vue')['default']
     LinkButton: typeof import('./src/components/home/LinkButton.vue')['default']
-    RegisterHomeView: typeof import('./src/components/RegisterHomeView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']

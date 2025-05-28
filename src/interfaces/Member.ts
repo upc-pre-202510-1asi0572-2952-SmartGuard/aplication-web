@@ -1,9 +1,13 @@
+export enum MemberRole{
+    Familiar = 'familiar',
+    Invitado = 'invitado',
+}
 export interface Member {
     id: number;
     nombre: string;
     edad: number;
-    rol: string;
-    parentesco: string;
+    rol: MemberRole;
+    parentesco?: string;
     descripcion: string;
     foto: string;
 }

@@ -9,7 +9,7 @@
 import { ref } from 'vue';
 import SidebarComponent from '../components/home/SidebarComponent.vue';
 import Button from '../components/shared/Button.vue';
-import RegisterHomeView from '../components/RegisterHomeView.vue';
+import RegisterHomeView from './RegisterHomeView.vue';
 import InitHomeSpace from '../components/InitHomeSpace.vue';
 import WrapperScreen from '../components/WrapperScreen.vue';
 export default {

@@ -55,20 +55,6 @@
       "securitySystem": "Sensor de humo",
       "smartFeatures": 3,
       "photoURL": "https://media.istockphoto.com/id/157193895/es/foto/la-hermosa-piscina-en-una-finca-hogar.jpg?s=612x612&w=0&k=20&c=9SY3IDt3vmyAlr2_O58d5s5kNlhoYYNl6M6GaGPcjJs="
-    },
-    {
-      "id": "0a8a",
-      "name": "Quijamarca",
-      "address": "La calle Real 23",
-      "propertyType": "Casa",
-      "bedrooms": 4,
-      "bathrooms": 1,
-      "heating": true,
-      "waterSupply": "Sedapal",
-      "internetProvider": "Movistar",
-      "securitySystem": "Prosegur",
-      "smartFeatures": 6,
-      "photoURL": "https://images.adsttc.com/media/images/5937/1c5b/e58e/cecb/6a00/0065/newsletter/E6.jpg?1496783955"
     }
   ],
   "users": [
@@ -94,16 +80,16 @@
       "id": 1,
       "nombre": "Sofia Perez",
       "edad": 45,
-      "rol": "Administradora",
+      "rol": "Familiar",
       "parentesco": "Madre",
-      "descripcion": "Soy Sofia, soy la encargada de cuidar este hogar por medio de mi consentimiento de acceso",
+      "descripcion": "Soy Sofia, soy la encargada de cuidar este hogar",
       "foto": "https://st4.depositphotos.com/10932024/25011/i/450/depositphotos_250111206-stock-photo-outdoor-portrait-of-positive-confident.jpg"
     },
     {
       "id": 2,
       "nombre": "Carlos Ramirez",
       "edad": 17,
-      "rol": "Miembro",
+      "rol": "Familiar",
       "parentesco": "Hijo",
       "descripcion": "Soy Carlos, uso la app para entrar a casa después de la escuela",
       "foto": "https://media.istockphoto.com/id/1158014305/es/foto/disparo-a-la-cabeza-de-un-adolescente.jpg?s=612x612&w=0&k=20&c=_CExHleR5PiSV-Wwa6i7mk-2LZVJk4tOWCdUbb2mUzU="
@@ -112,10 +98,19 @@
       "id": 3,
       "nombre": "Alejandro Salas",
       "edad": 18,
-      "rol": "Miembro",
+      "rol": "Familiar",
       "parentesco": "Hijo",
       "descripcion": "Soy Alejandro y necesito acceso a la casa a altas horas de la noche por mis turnos de trabajo",
       "foto": "https://media.istockphoto.com/id/1323167284/es/foto/joven-indio-exitoso-con-elegantes-anteojos-de-pie-en-la-calle-guapo-modelo-asi%C3%A1tico-posando.jpg?s=612x612&w=0&k=20&c=oug8WEXKK_e7cJPPJ7EqUc1yq2_tVQpeNTl1_2B-DZo="
+    },
+    {
+      "id": 4,
+      "nombre": "Julian",
+      "edad": 22,
+      "rol": "familiar",
+      "parentesco": "Padrino",
+      "descripcion": "Soy julian y soy chevere",
+      "foto": "https://thumbs.dreamstime.com/b/cara-de-cerca-un-joven-blanco-a%C3%B1os-el-rostro-serio-etnia-cauc%C3%A1sica-poco-m%C3%A1s-veinte-fondo-gris-triste-hombre-con-ojos-grises-y-169926584.jpg"
     }
   ]
 }
