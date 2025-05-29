@@ -9,7 +9,8 @@
                 <div class="flex flex-col lg:w-md gap-4">
                   <Button class="font-semibold" _texto="+ Agregar miembros"
                           @click="goToAdd" />
-                  <Button class="font-semibold" _texto="- Eliminar miembros" />
+                  <Button class="font-semibold" _texto="- Eliminar miembros"
+                          @click="goToDelete" />
                 </div>
             </div>
             <div class="flex flex-col gap-4 mt-8">
@@ -73,6 +74,9 @@ export default {
         },
       goToAdd() {
         this.$router.push({ name: 'AddMember' })
+      },
+      goToDelete(){
+          this.$router.push({name:'DeleteMember'})
       }
     }
 }

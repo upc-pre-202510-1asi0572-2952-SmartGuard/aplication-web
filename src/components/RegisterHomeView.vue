@@ -213,7 +213,7 @@ export default defineComponent({
 
       const newHome: Home = await res.json()
       alert(`Hogar registrado correctamente (id: ${newHome.id})`)
-      router.push({ name: 'Members' })
+      router.push({ name: 'home' })
     }
 
     return {

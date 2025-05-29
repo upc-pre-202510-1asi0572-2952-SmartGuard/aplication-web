@@ -11,6 +11,8 @@ import MembershipView from "../views/MembershipView.vue";
 import RecoverPasswordView from "../views/RecoverPasswordView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import AddMemberView from "../views/AddMemberView.vue";
+import DeleteMemberView from "../views/DeleteMemberView.vue";
+import DeviceManagementView from "../views/DeviceManagementView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -19,10 +21,13 @@ const router = createRouter({
     { path: "/splashview", name: "splashview", component: SplashView },
     { path: "/login", name: "login", component: LoginView },
     { path: "/configuration", name: "configuration", component: ConfigurationView },
+    { path: "/device-management", name: "devicemanagement", component: DeviceManagementView },
+
     { path: "/home", name: "home", component: HomeView },
     { path: "/profile", name: "Profile", component: ProfileView },
     { path: "/members", name: "Members", component: MembersView },
     { path: "/members/add", name: "AddMember", component: AddMemberView },
+    {path: "/members/delete", name: "DeleteMember", component: DeleteMemberView},
     { path: "/stadisticas", name: "stadisticas", component: StadisticView },
     { path: "/membership", name: "Membership", component: MembershipView },
     { path: "/register", name: "register", component: RegisterView },
