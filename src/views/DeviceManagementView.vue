@@ -90,7 +90,7 @@
                 @click="removeEnrolledUser(device.id)"
                 class="flex-1 py-2 bg-red-100 text-red-600 rounded-full font-medium hover:bg-red-200 transition"
             >
-              - Eliminar Inscrito
+              Eliminar Inscrito
             </button>
           </div>
         </div>
