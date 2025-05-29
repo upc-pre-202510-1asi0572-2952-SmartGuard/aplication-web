@@ -58,6 +58,7 @@ const links = ref<Link[]>([
   { text: 'Perfil', iconClass: 'pi pi-user', route: '/profile' },
   { text: 'Configuraciones', iconClass: 'pi pi-cog', route: '/configuration' },
   { text: 'Conseguir Premium', iconClass: 'pi pi-star', route: '/membership' },
+  { text: 'Ayuda y Soporte', iconClass: 'pi pi-question-circle', route: '/support' },
   { text: 'Salir', iconClass: 'pi pi-sign-out', route: '/login' }
 ]);
 
