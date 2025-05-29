@@ -1,7 +1,7 @@
 {
   "homes": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Casa Los Pinos",
       "address": "Av. Los Álamos 45, San Isidro, Lima, Perú",
       "propertyType": "Casa",
@@ -15,7 +15,7 @@
       "photoURL": "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/FJYA5LJ4PNEIVNBUDMQ66KV6UQ.jpg"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Departamento Vista Mar",
       "address": "Malecón de la Reserva 123, Miraflores, Lima, Perú",
       "propertyType": "Departamento",
@@ -29,7 +29,7 @@
       "photoURL": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Quinta Verde",
       "address": "Camino Real 78, Chaclacayo, Lima, Perú",
       "propertyType": "Casa de campo",
@@ -43,7 +43,7 @@
       "photoURL": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Loft Urbano",
       "address": "Jirón Junín 456, Cercado de Lima, Lima, Perú",
       "propertyType": "Loft",
@@ -59,58 +59,61 @@
   ],
   "users": [
     {
-      "id": "cdb7",
-      "nombres": "Josue",
+      "id": "1",
+      "nombres": "Tony",
       "apellidos": "Ramos",
-      "email": "pepo",
-      "telefono": "986543245",
+      "email": "tonyramos",
+      "telefono": "987362738",
       "ubicacion": "Peru",
-      "direccion": "La paz",
-      "fechadenacimiento": "2003-03-12",
+      "direccion": "La paz 321",
+      "fechadenacimiento": "",
       "genero": "Masculino",
-      "ocupacion": "Periodista",
-      "foto": "https://img.freepik.com/foto-gratis/nunca-escuche-broma-mejor-hombre-guapo-feliz-camiseta-roja-casual-pulgar-arriba_176420-24336.jpg?semt=ais_hybrid&w=740",
-      "password": "hola",
-      "confirmpassword": "hola",
+      "ocupacion": "Profesor",
+      "foto": "https://www.uns.edu.pe/recursos/noticias/d47d3505b4171afc72df01d61dd6fe19.jpg",
+      "password": "tony",
+      "confirmpassword": "tony",
       "terminos": true
     }
   ],
   "members": [
     {
       "id": 1,
-      "nombre": "Sofia Perez",
-      "edad": 45,
-      "rol": "Familiar",
-      "parentesco": "Madre",
-      "descripcion": "Soy Sofia, soy la encargada de cuidar este hogar",
-      "foto": "https://st4.depositphotos.com/10932024/25011/i/450/depositphotos_250111206-stock-photo-outdoor-portrait-of-positive-confident.jpg"
-    },
-    {
-      "id": 2,
-      "nombre": "Carlos Ramirez",
-      "edad": 17,
+      "nombre": "Pedro Gomez",
+      "edad": 32,
       "rol": "Familiar",
       "parentesco": "Hijo",
-      "descripcion": "Soy Carlos, uso la app para entrar a casa después de la escuela",
-      "foto": "https://media.istockphoto.com/id/1158014305/es/foto/disparo-a-la-cabeza-de-un-adolescente.jpg?s=612x612&w=0&k=20&c=_CExHleR5PiSV-Wwa6i7mk-2LZVJk4tOWCdUbb2mUzU="
-    },
-    {
-      "id": 3,
-      "nombre": "Alejandro Salas",
-      "edad": 18,
-      "rol": "Familiar",
-      "parentesco": "Hijo",
-      "descripcion": "Soy Alejandro y necesito acceso a la casa a altas horas de la noche por mis turnos de trabajo",
+      "descripcion": "Soy Pedro hijo y quiero tener acceso a mi casa",
       "foto": "https://media.istockphoto.com/id/1323167284/es/foto/joven-indio-exitoso-con-elegantes-anteojos-de-pie-en-la-calle-guapo-modelo-asi%C3%A1tico-posando.jpg?s=612x612&w=0&k=20&c=oug8WEXKK_e7cJPPJ7EqUc1yq2_tVQpeNTl1_2B-DZo="
     },
     {
-      "id": 4,
-      "nombre": "Julian",
-      "edad": 22,
-      "rol": "familiar",
-      "parentesco": "Padrino",
-      "descripcion": "Soy julian y soy chevere",
-      "foto": "https://thumbs.dreamstime.com/b/cara-de-cerca-un-joven-blanco-a%C3%B1os-el-rostro-serio-etnia-cauc%C3%A1sica-poco-m%C3%A1s-veinte-fondo-gris-triste-hombre-con-ojos-grises-y-169926584.jpg"
+      "id": 2,
+      "nombre": "Joaquin Chupez",
+      "edad": 23,
+      "rol": "Familiar",
+      "parentesco": "Hijo",
+      "descripcion": "Hola soy joaquin y soy feliz",
+      "foto": "https://media.istockphoto.com/id/516688666/es/foto/hermosa-adolescente-de-sexo-masculino-sonriendo-y-posando-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=zJQX-ExYhWSL9NeyhGNZXfafIrW6wzSqs1sSCDPTa2Y="
+    },
+    {
+      "id": 3,
+      "nombre": "Gerardo Perez",
+      "edad": 44,
+      "rol": "Familiar",
+      "parentesco": "Abuelo",
+      "descripcion": "Hoy soy Gerardo",
+      "foto": "https://media.istockphoto.com/id/1273871774/es/foto/joven-joven-%C3%A1rabe-guapo-hombre-que-lleva-camiseta-blanca-casual-cara-feliz-sonriendo-con-los.jpg?s=612x612&w=0&k=20&c=26Su4ruTsO9ppelZcIrHdog54BV43qFc-UE92wlNh_A="
+    }
+  ],
+  "devices": [
+    {
+      "id": 1,
+      "name": "ESP32-CAM Principal",
+      "cameraFeed": "https://www.teslaelectronic.com.pe/wp-content/uploads/2022/11/ESP32-CAM-ADAPTADOR.1.png",
+      "motionDetected": false,
+      "ledOn": false,
+      "firmware": "v1.2.3",
+      "battery": 87,
+      "enrolledUsers": []
     }
   ]
 }

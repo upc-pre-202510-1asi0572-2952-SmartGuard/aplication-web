@@ -51,6 +51,7 @@ interface Link {
 
 const links = ref<Link[]>([
   { text: 'Hogar', iconClass: 'pi pi-home', route: '/home' },
+  { text: 'Dispositivos', iconClass: 'pi pi-desktop', route: '/device-management' },
   { text: 'Accesos', iconClass: 'pi pi-clone', route: '/home' },
   { text: 'Miembros', iconClass: 'pi pi-users', route: '/members' },
   { text: 'Estadísticas', iconClass: 'pi pi-chart-line', route: '/stadisticas' },

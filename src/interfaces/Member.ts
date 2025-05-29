@@ -1,6 +1,6 @@
 export enum MemberRole{
-    Familiar = 'familiar',
-    Invitado = 'invitado',
+    Familiar = 'Familiar',
+    Invitado = 'Invitado',
 }
 export interface Member {
     id: number;
