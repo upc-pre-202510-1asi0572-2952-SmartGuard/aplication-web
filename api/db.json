@@ -1,7 +1,7 @@
 {
   "homes": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Casa Los Pinos",
       "address": "Av. Los Álamos 45, San Isidro, Lima, Perú",
       "propertyType": "Casa",
@@ -15,7 +15,7 @@
       "photoURL": "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/FJYA5LJ4PNEIVNBUDMQ66KV6UQ.jpg"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Departamento Vista Mar",
       "address": "Malecón de la Reserva 123, Miraflores, Lima, Perú",
       "propertyType": "Departamento",
@@ -29,7 +29,7 @@
       "photoURL": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Quinta Verde",
       "address": "Camino Real 78, Chaclacayo, Lima, Perú",
       "propertyType": "Casa de campo",
@@ -43,7 +43,7 @@
       "photoURL": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Loft Urbano",
       "address": "Jirón Junín 456, Cercado de Lima, Lima, Perú",
       "propertyType": "Loft",
@@ -59,7 +59,7 @@
   ],
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "nombres": "Carlos",
       "apellidos": "Sousa",
       "email": "carlos",
