@@ -29,9 +29,9 @@
       "photoURL": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Quinta Verde",
-      "address": "Camino Real 78, Chaclacayo, Lima, Perú",
+      "address": "Camino Real 4403",
       "propertyType": "Casa de campo",
       "bedrooms": 6,
       "bathrooms": 4,
@@ -39,7 +39,7 @@
       "waterSupply": "Pozo profundo",
       "internetProvider": "Entel",
       "securitySystem": "Cámaras y alarma integrada",
-      "smartFeatures": 12,
+      "smartFeatures": 11,
       "photoURL": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
     },
     {
@@ -59,10 +59,10 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "nombres": "Carlos",
       "apellidos": "Sousa",
-      "email": "carlos",
+      "email": "carlos@gmail.com",
       "telefono": "987362738",
       "ubicacion": "Peru",
       "direccion": "La paz 321",
@@ -70,8 +70,8 @@
       "genero": "Masculino",
       "ocupacion": "Profesor",
       "foto": "https://www.uns.edu.pe/recursos/noticias/d47d3505b4171afc72df01d61dd6fe19.jpg",
-      "password": "sousa",
-      "confirmpassword": "sousa",
+      "password": "hola",
+      "confirmpassword": "hola",
       "terminos": true
     }
   ],

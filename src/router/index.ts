@@ -20,6 +20,8 @@ import Contact from "../support/Contact.vue";
 import Tutorials from "../support/Tutorials.vue";
 import Documentation from "../support/Documentation.vue";
 import LiveChat from "../support/LiveChat.vue";
+import EditHomeView from "../views/EditHomeView.vue";
+import DeleteHomeView from "../views/DeleteHomeView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,6 +33,8 @@ const router = createRouter({
     { path: "/device-management", name: "devicemanagement", component: DeviceManagementView },
     { path: "/access", name: "access", component: AccessView },
     { path: "/home", name: "home", component: HomeView },
+    { path: "/home/edit", name: "edithome", component: EditHomeView },
+    { path: "/home/delete", name: "deletehome", component: DeleteHomeView },
     { path: "/profile", name: "Profile", component: ProfileView },
     { path: "/members", name: "Members", component: MembersView },
     { path: "/members/add", name: "AddMember", component: AddMemberView },
