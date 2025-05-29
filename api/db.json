@@ -60,9 +60,9 @@
   "users": [
     {
       "id": "1",
-      "nombres": "Tony",
-      "apellidos": "Ramos",
-      "email": "tonyramos",
+      "nombres": "Carlos",
+      "apellidos": "Sousa",
+      "email": "carlos",
       "telefono": "987362738",
       "ubicacion": "Peru",
       "direccion": "La paz 321",
@@ -70,8 +70,8 @@
       "genero": "Masculino",
       "ocupacion": "Profesor",
       "foto": "https://www.uns.edu.pe/recursos/noticias/d47d3505b4171afc72df01d61dd6fe19.jpg",
-      "password": "tony",
-      "confirmpassword": "tony",
+      "password": "sousa",
+      "confirmpassword": "sousa",
       "terminos": true
     }
   ],
@@ -113,7 +113,9 @@
       "ledOn": false,
       "firmware": "v1.2.3",
       "battery": 87,
-      "enrolledUsers": []
+      "enrolledUsers": [
+        "Pedro Gomez"
+      ]
     }
   ]
 }

@@ -13,6 +13,7 @@ import RegisterView from "../views/RegisterView.vue";
 import AddMemberView from "../views/AddMemberView.vue";
 import DeleteMemberView from "../views/DeleteMemberView.vue";
 import DeviceManagementView from "../views/DeviceManagementView.vue";
+import AccessView from "../views/AccessView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -22,7 +23,7 @@ const router = createRouter({
     { path: "/login", name: "login", component: LoginView },
     { path: "/configuration", name: "configuration", component: ConfigurationView },
     { path: "/device-management", name: "devicemanagement", component: DeviceManagementView },
-
+    { path: "/access", name: "access", component: AccessView },
     { path: "/home", name: "home", component: HomeView },
     { path: "/profile", name: "Profile", component: ProfileView },
     { path: "/members", name: "Members", component: MembersView },
