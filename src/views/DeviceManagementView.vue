@@ -159,8 +159,8 @@ export default defineComponent({
     onMounted(async () => {
       try {
         const [devRes, memRes] = await Promise.all([
-          fetch('http://localhost:3000/devices'),
-          fetch('http://localhost:3000/members')
+          fetch('https://fake-api-smartguard.vercel.app/devices'),
+          fetch('https://fake-api-smartguard.vercel.app/members')
         ])
         if (!devRes.ok || !memRes.ok) throw new Error('Error al cargar datos')
 
@@ -206,7 +206,7 @@ export default defineComponent({
         device.enrolledUsers.push(member.nombre)
 
         // 2) Graba TODO el dispositivo con PUT
-        await fetch(`http://localhost:3000/devices/${device.id}`, {
+        await fetch(`https://fake-api-smartguard.vercel.app/devices/${device.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(device)     // <–– enviamos el objeto completo, incluido enrolledUsers
@@ -234,7 +234,7 @@ export default defineComponent({
       device.enrolledUsers = device.enrolledUsers!.filter(u => u !== name)
 
       // Persistimos con PUT
-      await fetch(`http://localhost:3000/devices/${device.id}`, {
+      await fetch(`https://fake-api-smartguard.vercel.app/devices/${device.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(device)

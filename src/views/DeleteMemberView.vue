@@ -48,7 +48,7 @@ export default defineComponent({
 
       try {
         const res = await fetch(
-            `http://localhost:3000/members/${memberId.value}`,
+            `https://fake-api-smartguard.vercel.app/members/${memberId.value}`,
             { method: 'DELETE' }
         )
         if (res.ok) {

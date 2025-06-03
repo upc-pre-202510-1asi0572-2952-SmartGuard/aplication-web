@@ -78,7 +78,7 @@ onMounted(async () => {
   updateWidth();
   window.addEventListener('resize', updateWidth);
   try {
-    const res = await fetch('http://localhost:3000/users');
+    const res = await fetch('https://fake-api-smartguard.vercel.app/users');
     if (!res.ok) throw new Error('Error al obtener usuarios');
     const users: User[] = await res.json();
     currentUser.value = users[0] || null;

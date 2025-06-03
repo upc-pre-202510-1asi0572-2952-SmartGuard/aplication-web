@@ -77,7 +77,7 @@ export default defineComponent({
         delete member.parentesco
       }
 
-      const listRes = await fetch('http://localhost:3000/members')
+      const listRes = await fetch('https://fake-api-smartguard.vercel.app/members')
       if (!listRes.ok) {
         alert('No se pudo obtener la lista de miembros')
         return
@@ -89,7 +89,7 @@ export default defineComponent({
 
       member.id = nextId
 
-      const res = await fetch('http://localhost:3000/members', {
+      const res = await fetch('https://fake-api-smartguard.vercel.app/members', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(member)

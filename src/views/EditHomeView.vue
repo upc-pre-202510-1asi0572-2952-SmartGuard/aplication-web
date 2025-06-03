@@ -105,7 +105,7 @@ export default defineComponent({
         return;
       }
       try {
-        const res = await fetch(`http://localhost:3000/homes/${inputId.value}`);
+        const res = await fetch(`https://fake-api-smartguard.vercel.app/homes/${inputId.value}`);
         if (res.status === 404) {
           errorMsg.value = `No existe un hogar con ID ${inputId.value}.`;
           console.log('Error:', errorMsg.value);
@@ -122,7 +122,7 @@ export default defineComponent({
 
     const onUpdateHome = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/homes/${home.id}`, {
+        const res = await fetch(`https://fake-api-smartguard.vercel.app/homes/${home.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(home),

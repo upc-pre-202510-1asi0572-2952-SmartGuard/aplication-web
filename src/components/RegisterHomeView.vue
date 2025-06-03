@@ -175,7 +175,7 @@ export default defineComponent({
         step.value < 3 ? nextStep() : onFinish()
 
     const onFinish = async () => {
-      const listRes = await fetch('http://localhost:3000/homes')
+      const listRes = await fetch('https://fake-api-smartguard.vercel.app/homes')
       if (!listRes.ok) {
         alert('No se pudo obtener lista de hogares')
         return
@@ -201,7 +201,7 @@ export default defineComponent({
         photoURL:       home.photoURL
       }
 
-      const res = await fetch('http://localhost:3000/homes', {
+      const res = await fetch('https://fake-api-smartguard.vercel.app/homes', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(payload)

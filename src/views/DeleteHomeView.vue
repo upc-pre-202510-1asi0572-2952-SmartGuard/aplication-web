@@ -105,7 +105,7 @@ export default defineComponent({
 
       loading.value = true;
       try {
-        const res = await fetch(`http://localhost:3000/homes/${inputId.value}`);
+        const res = await fetch(`https://fake-api-smartguard.vercel.app/homes/${inputId.value}`);
         if (res.status === 404) {
           errorMsg.value = `No existe un hogar con ID ${inputId.value}.`;
           return;                 // <— No avanzamos al paso 2
@@ -122,7 +122,7 @@ export default defineComponent({
     const onDeleteHome = async () => {
       if (!home.value) return;
       try {
-        await fetch(`http://localhost:3000/homes/${inputId.value}`, { method: 'DELETE' });
+        await fetch(`https://fake-api-smartguard.vercel.app/homes/${inputId.value}`, { method: 'DELETE' });
         router.push({ name: 'home' });
       } catch {
         errorMsg.value = 'Error al eliminar el hogar.';
