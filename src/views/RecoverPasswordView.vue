@@ -107,7 +107,7 @@ export default defineComponent({
     const submitEmail = async () => {
       if (!email.value) return alert('Ingresa un email válido.');
       try {
-        const res = await fetch(`http://localhost:3000/users?email=${email.value}`);
+        const res = await fetch(`https://fake-api-smartguard.vercel.app/users?email=${email.value}`);
         const users = await res.json();
         if (!users.length) {
           return alert('Email no registrado.');
@@ -133,7 +133,7 @@ export default defineComponent({
         return alert('Usuario no válido.');
       }
       try {
-        await fetch(`http://localhost:3000/users/${userId.value}`, {
+        await fetch(`https://fake-api-smartguard.vercel.app/users/${userId.value}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: newPassword.value, confirmpassword: newPassword.value })

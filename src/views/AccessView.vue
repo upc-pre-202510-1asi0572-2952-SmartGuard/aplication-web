@@ -156,9 +156,9 @@ export default defineComponent({
 
     onMounted(async () => {
       const [mRes, dRes, aRes] = await Promise.all([
-        fetch('http://localhost:3000/members'),
-        fetch('http://localhost:3000/devices'),
-        fetch('http://localhost:3000/accesses')
+        fetch('https://fake-api-smartguard.vercel.app/members'),
+        fetch('https://fake-api-smartguard.vercel.app/devices'),
+        fetch('https://fake-api-smartguard.vercel.app/accesses')
       ])
       if (mRes.ok) members.value = await mRes.json()
       if (dRes.ok) devices.value = await dRes.json()
@@ -188,7 +188,7 @@ export default defineComponent({
         success
       }
       accesses.value.push(newAccess)
-      await fetch('http://localhost:3000/accesses', {
+      await fetch('https://fake-api-smartguard.vercel.app/accesses', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newAccess)
       })
       alert(success ? 'Acceso permitido' : 'Acceso denegado')

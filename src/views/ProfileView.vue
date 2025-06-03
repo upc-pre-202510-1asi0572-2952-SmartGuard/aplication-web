@@ -127,7 +127,7 @@ export default defineComponent({
   async mounted() {
     try {
       // fetch all users and pick first, porque /users/1 no devuelve nada
-      const res = await fetch('http://localhost:3000/users');
+      const res = await fetch('https://fake-api-smartguard.vercel.app/users');
       console.log('fetch status:', res.status);
       if (!res.ok) throw new Error('Error cargando usuarios');
       const users: User[] = await res.json();
@@ -152,7 +152,7 @@ export default defineComponent({
       );
       if (!confirmed) return;
       try {
-        await fetch(`http://localhost:3000/users/${this.user.id}`, { method: 'DELETE' });
+        await fetch(`https://fake-api-smartguard.vercel.app/users/${this.user.id}`, { method: 'DELETE' });
         this.$router.push('/login');
       } catch (e) {
         alert('Error al eliminar la cuenta. Intenta de nuevo.');

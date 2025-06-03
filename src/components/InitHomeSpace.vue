@@ -110,7 +110,7 @@ export default defineComponent({
 
     const loadHomes = async () => {
       try {
-        const res = await fetch('http://localhost:3000/homes');
+        const res = await fetch('https://fake-api-smartguard.vercel.app/homes');
         if (!res.ok) throw new Error('Error cargando hogares');
         homes.value = await res.json();
       } catch (e) {

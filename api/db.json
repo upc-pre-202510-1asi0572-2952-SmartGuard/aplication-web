@@ -29,7 +29,7 @@
       "photoURL": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Quinta Verde",
       "address": "Camino Real 4403",
       "propertyType": "Casa de campo",
@@ -59,7 +59,7 @@
   ],
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "nombres": "Carlos",
       "apellidos": "Sousa",
       "email": "carlos@gmail.com",
@@ -113,9 +113,7 @@
       "ledOn": false,
       "firmware": "v1.2.3",
       "battery": 87,
-      "enrolledUsers": [
-        "Pedro Gomez"
-      ]
+      "enrolledUsers": []
     }
   ]
 }

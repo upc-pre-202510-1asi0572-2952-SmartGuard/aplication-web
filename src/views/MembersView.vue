@@ -61,7 +61,7 @@ export default {
     },
     async mounted() {
       try {
-        const res = await fetch('http://localhost:3000/members');
+        const res = await fetch('https://fake-api-smartguard.vercel.app/members');
         if (!res.ok) throw new Error('Error al cargar miembros');
         this.miembros = await res.json();
       } catch (error) {

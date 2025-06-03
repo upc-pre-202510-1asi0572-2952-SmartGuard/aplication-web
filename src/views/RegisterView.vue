@@ -112,14 +112,14 @@ export default defineComponent({
 
       try {
         // Revisar lista usuarios y calcular nextId
-        const listRes = await fetch('http://localhost:3000/users');
+        const listRes = await fetch('https://fake-api-smartguard.vercel.app/users');
         if (!listRes.ok) throw new Error('No se pudo obtener lista de usuarios');
         const users: Array<{id: number}> = await listRes.json();
         const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
 
         const payload: any = { id: nextId, ...user };
 
-        const res = await fetch('http://localhost:3000/users', {
+        const res = await fetch('https://fake-api-smartguard.vercel.app/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
