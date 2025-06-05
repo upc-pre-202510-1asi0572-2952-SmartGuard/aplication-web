@@ -7,10 +7,13 @@
                     permiso
                     para acceder a tu hogar</p>
                 <div class="flex flex-col lg:w-md gap-4">
-                  <Button class="font-semibold" _texto="+ Agregar miembros"
+                  <Button class="font-semibold" _texto="+ Agregar miembro"
                           @click="goToAdd" />
-                  <Button class="font-semibold" _texto="- Eliminar miembros"
+                  <Button class="font-semibold" _texto="* Editar miembro"
+                          @click="goToEdit" />
+                  <Button class="font-semibold" _texto="- Eliminar miembro"
                           @click="goToDelete" />
+
                 </div>
             </div>
             <div class="flex flex-col gap-4 mt-8">
@@ -77,6 +80,9 @@ export default {
       },
       goToDelete(){
           this.$router.push({name:'DeleteMember'})
+      },
+      goToEdit(){
+          this.$router.push({name:'EditMember'})
       }
     }
 }

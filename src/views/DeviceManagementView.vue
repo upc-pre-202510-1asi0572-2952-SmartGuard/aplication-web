@@ -8,18 +8,6 @@
           <p class="mt-1 text-gray-600">Administra tus dispositivos IoT y controla el acceso de tu hogar.</p>
         </div>
         <div class="mt-4 md:mt-0 flex space-x-4">
-          <button
-              @click="goToAdd"
-              class="px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow hover:from-blue-600 hover:to-indigo-700 transition"
-          >
-            + Agregar
-          </button>
-          <button
-              @click="goToDelete"
-              class="px-5 py-2 bg-red-100 text-red-600 font-semibold rounded-lg shadow hover:bg-red-200 transition"
-          >
-            - Eliminar
-          </button>
         </div>
       </div>
 
@@ -205,7 +193,7 @@ export default defineComponent({
         // 1) Añade localmente
         device.enrolledUsers.push(member.nombre)
 
-        // 2) Graba TODO el dispositivo con PUT
+        // 2) Graba TO DO el dispositivo con PUT
         await fetch(`https://fake-api-smartguard.vercel.app/devices/${device.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -245,10 +233,6 @@ export default defineComponent({
     }
 
     const cancelRemove = () => { showRemoveModal.value = false }
-
-    const goToAdd = () => console.log('Navegar a Agregar Dispositivo')
-    const goToDelete = () => console.log('Navegar a Eliminar Dispositivo')
-
     return {
       devices,
       members,
@@ -263,8 +247,6 @@ export default defineComponent({
       confirmRemove,
       cancelRemove,
       toggleDoor,
-      goToAdd,
-      goToDelete,
       currentDevice
     }
   }
