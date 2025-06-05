@@ -115,5 +115,34 @@
       "battery": 87,
       "enrolledUsers": []
     }
+  ],
+  "accesses": [
+    {
+      "id": 1,
+      "memberId": 2,
+      "memberName": "Joaquin Chupez",
+      "deviceId": 1,
+      "deviceName": "ESP32-CAM Principal",
+      "timestamp": "2025-06-05T13:44:27.775Z",
+      "success": false
+    },
+    {
+      "id": 2,
+      "memberId": 3,
+      "memberName": "Gerardo Perez",
+      "deviceId": 1,
+      "deviceName": "ESP32-CAM Principal",
+      "timestamp": "2025-06-05T13:44:37.884Z",
+      "success": false
+    },
+    {
+      "id": 3,
+      "memberId": 1,
+      "memberName": "Pedro Gomez",
+      "deviceId": 1,
+      "deviceName": "ESP32-CAM Principal",
+      "timestamp": "2025-06-05T14:19:15.538Z",
+      "success": false
+    }
   ]
 }
