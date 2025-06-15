@@ -1,4 +1,3 @@
-
 <template>
   <WrapperScreen>
     <div class="form-wrapper">
@@ -8,16 +7,19 @@
           <label for="memberId">ID del Miembro</label>
           <input
               id="memberId"
-              type="number"
-              v-model.number="memberId"
-              min="1"
+              type="text"
+              v-model="memberId"
               required
               class="input-box"
           />
         </div>
         <div class="button-group">
-          <button type="button" class="btn btn-danger" @click="deleteMember">Eliminar</button>
-          <button type="button" @click="cancel" class="btn btn-secondary">Cancelar</button>
+          <button type="button" class="btn btn-danger" @click="deleteMember">
+            Eliminar
+          </button>
+          <button type="button" @click="cancel" class="btn btn-secondary">
+            Cancelar
+          </button>
         </div>
       </form>
     </div>
@@ -27,32 +29,37 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import WrapperScreen from "../components/WrapperScreen.vue"
+import WrapperScreen from "../components/WrapperScreen.vue";
+
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 export default defineComponent({
   name: 'DeleteMemberView',
   components: { WrapperScreen },
   setup() {
     const router = useRouter()
-    const memberId = ref<number | null>(null)
+    const memberId = ref<string>('')
 
     const deleteMember = async () => {
-      if (!memberId.value) {
-        alert('Ingrese un ID válido')
+      if (!memberId.value.trim()) {
+        alert('Ingrese un ID válido (string completo).')
         return
       }
-      const confirmed = confirm(
-          `¿Estás seguro de eliminar el miembro con ID ${memberId.value}? Esta acción es irreversible.`
-      )
-      if (!confirmed) return
+      if (
+          !confirm(
+              `¿Estás seguro de eliminar el miembro con ID "${memberId.value}"? Esta acción es irreversible.`
+          )
+      ) {
+        return
+      }
 
       try {
         const res = await fetch(
-            `https://fake-api-smartguard.vercel.app/members/${memberId.value}`,
+            `${backendUrl}/api/v1/miembroMysql/${memberId.value}`,
             { method: 'DELETE' }
         )
         if (res.ok) {
-          alert(`Miembro con ID ${memberId.value} eliminado correctamente`)
+          alert(`Miembro con ID "${memberId.value}" eliminado correctamente.`)
           router.push({ name: 'Members' })
         } else {
           alert(`Error al eliminar el miembro. Status: ${res.status}`)

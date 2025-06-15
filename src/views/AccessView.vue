@@ -134,126 +134,84 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import type { Member } from '../interfaces/Member.ts';
-import type { Device } from '../interfaces/Device.ts';
-import WrapperScreen from '../components/WrapperScreen.vue';
+import { defineComponent, ref, onMounted } from 'vue'
+import type { Member } from '../interfaces/Member'
+import type { Device } from '../interfaces/Device'
+import WrapperScreen from '../components/WrapperScreen.vue'
 
 interface Access {
-  id: number;
-  memberId: number;
-  memberName: string;
-  deviceId: number;
-  deviceName: string;
-  timestamp: string;
-  success: boolean;
+  id: number
+  memberId: string
+  memberName: string
+  deviceId: string
+  deviceName: string
+  timestamp: string
+  success: boolean
 }
 
 export default defineComponent({
   name: 'AccessView',
   components: { WrapperScreen },
   setup() {
-    const members = ref<Member[]>([]);
-    const devices = ref<Device[]>([]);
-    const accesses = ref<Access[]>([]);
-    const showModal = ref(false);
-    const selMember = ref<number | null>(null);
-    const selDevice = ref<number | null>(null);
+    const members = ref<Member[]>([])
+    const devices = ref<Device[]>([])
+    const accesses = ref<Access[]>([])
+    const showModal = ref(false)
+    const selMember = ref<string>('')    // siempre string
+    const selDevice = ref<string>('')    // siempre string
 
-    // URL base para JSON Server local
-    const BASE_URL = 'https://fake-api-smartguard.vercel.app';
+    const BASE_URL = 'https://fake-api-smartguard.vercel.app'
 
     onMounted(async () => {
-      const [mRes, dRes, aRes] = await Promise.all([
-        fetch(`${BASE_URL}/members`),
-        fetch(`${BASE_URL}/devices`),
-        fetch(`${BASE_URL}/accesses`),
-      ]);
-      if (mRes.ok) members.value = await mRes.json();
-      if (dRes.ok) devices.value = await dRes.json();
-      if (aRes.ok) accesses.value = await aRes.json();
-    });
+      try {
+        const [mRes, dRes] = await Promise.all([
+          fetch(`${BASE_URL}/members`),
+          fetch(`${BASE_URL}/devices`)
+        ])
+        if (mRes.ok) members.value = await mRes.json()
+        if (dRes.ok) devices.value = await dRes.json()
+      } catch (e) {
+        console.error(e)
+      }
+    })
 
     const openModal = () => {
-      showModal.value = true;
-      selMember.value = null;
-      selDevice.value = null;
-    };
+      showModal.value = true
+      selMember.value = ''
+      selDevice.value = ''
+    }
     const closeModal = () => {
-      showModal.value = false;
-    };
+      showModal.value = false
+    }
 
-    const formatDate = (iso: string) => new Date(iso).toLocaleString();
+    const formatDate = (iso: string) => new Date(iso).toLocaleString()
 
-    const confirmAccess = async () => {
+    const confirmAccess = () => {
       if (!selMember.value || !selDevice.value) {
-        alert('Selecciona miembro y dispositivo');
-        return;
+        alert('Selecciona miembro y dispositivo')
+        return
       }
-      const member = members.value.find((m) => m.id === selMember.value)!;
-      const device = devices.value.find((d) => d.id === selDevice.value)!;
-      const success = device.enrolledUsers?.includes(member.nombre) ?? false;
-
+      // Stub: creamos un acceso temporal sin hacer find()
       const newAccess: Access = {
-        id: accesses.value.length ? Math.max(...accesses.value.map((a) => a.id)) + 1 : 1,
-        memberId: member.id,
-        memberName: member.nombre,
-        deviceId: device.id,
-        deviceName: device.name,
+        id: accesses.value.length
+            ? Math.max(...accesses.value.map(a => a.id)) + 1
+            : 1,
+        memberId: selMember.value,
+        memberName: '',
+        deviceId: selDevice.value,
+        deviceName: '',
         timestamp: new Date().toISOString(),
-        success,
-      };
-
-      // Mostrar inmediatamente
-      accesses.value.push(newAccess);
-
-      // Guardar en JSON Server
-      try {
-        const res = await fetch(`${BASE_URL}/accesses`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newAccess),
-        });
-        if (!res.ok) {
-          console.error('Error al guardar acceso en API:', res.status);
-          alert('No se pudo guardar el acceso en el servidor.');
-        } else {
-          alert(success ? 'Acceso permitido' : 'Acceso denegado');
-        }
-      } catch (e) {
-        console.error('Error de red al POST /accesses:', e);
-        alert('Error de red al guardar el acceso.');
+        success: false
       }
+      accesses.value.push(newAccess)
+      alert('Acceso registrado (temporal)')
+      closeModal()
+    }
 
-      closeModal();
-    };
-
-    const clearAccesses = async () => {
-      if (accesses.value.length === 0) {
-        alert('No hay accesos para eliminar.');
-        return;
-      }
-      const confirmed = confirm('¿Estás seguro de que deseas eliminar todos los accesos?');
-      if (!confirmed) return;
-
-      // Copiamos los IDs para eliminar
-      const idsToDelete = accesses.value.map(a => a.id);
-
-      try {
-        // Ejecutamos un DELETE por cada ID
-        await Promise.all(
-            idsToDelete.map(id =>
-                fetch(`${BASE_URL}/accesses/${id}`, { method: 'DELETE' })
-            )
-        );
-        // Limpiamos la vista localmente
-        accesses.value = [];
-        alert('Todos los accesos han sido eliminados.');
-      } catch (error) {
-        console.error('Error al eliminar accesos:', error);
-        alert('Ocurrió un error al eliminar los accesos.');
-      }
-    };
+    const clearAccesses = () => {
+      accesses.value = []
+      alert('Accesos borrados')
+    }
 
     return {
       members,
@@ -266,10 +224,10 @@ export default defineComponent({
       closeModal,
       confirmAccess,
       clearAccesses,
-      formatDate,
-    };
-  },
-});
+      formatDate
+    }
+  }
+})
 </script>
 
 <style scoped>

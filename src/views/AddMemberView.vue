@@ -10,42 +10,44 @@
 
         <div class="form-group">
           <label for="edad">Edad</label>
-               <input
-                   id="edad"
-                   type="number"
-                   v-model.number="member.edad"
-                   min="0"
-                   max="100"
-                   required
-               />
+          <input
+              id="edad"
+              type="number"
+              v-model.number="member.edad"
+              min="0"
+              max="100"
+              required
+          />
         </div>
 
         <div class="form-group">
-          <label for="rol">Rol</label>
-          <select id="rol" v-model="member.rol" required class="box">
-            <option :value="MemberRole.Familiar">Familiar</option>
-            <option :value="MemberRole.Invitado">Invitado</option>
-          </select>
-        </div>
-
-        <div class="form-group" v-if="member.rol === MemberRole.Familiar">
           <label for="parentesco">Parentesco</label>
-          <input id="parentesco" v-model="member.parentesco" required />
+          <input id="parentesco" v-model="member.parentesco" />
         </div>
 
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" v-model="member.descripcion" required></textarea>
+          <textarea
+              id="descripcion"
+              v-model="member.descripcion"
+              required
+          ></textarea>
         </div>
 
         <div class="form-group">
-          <label for="foto">URL Foto</label>
-          <input id="foto" v-model="member.foto" required />
+          <label for="fotoPerfil">URL FotoPerfil</label>
+          <input id="fotoPerfil" v-model="member.fotoPerfil" required />
         </div>
 
         <div class="button-group">
           <button type="submit" class="btn btn-primary">Guardar</button>
-          <button type="button" @click="$router.back()" class="btn btn-secondary">Cancelar</button>
+          <button
+              type="button"
+              @click="$router.back()"
+              class="btn btn-secondary"
+          >
+            Cancelar
+          </button>
         </div>
       </form>
     </div>
@@ -55,57 +57,50 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import {type Member, MemberRole} from "../interfaces/Member.ts";
+import type {Member} from "../interfaces/Member.ts";
+
+
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+const STATIC_USER_NICKNAME = 'juancho123'
 
 export default defineComponent({
   name: 'AddMemberView',
   setup() {
     const router = useRouter()
+
     const member = reactive<Member>({
-      id: 0,
       nombre: '',
       edad: 0,
-      rol: MemberRole.Familiar,
       parentesco: '',
       descripcion: '',
-      foto: ''
+      fotoPerfil: '',
+      // userNickname se asigna justo después
     })
 
+    // acaasignamos el userNickname estático antes de enviar
+    member.userNickname = STATIC_USER_NICKNAME
+
     const submitForm = async () => {
-      // si es invitado, removemos parentesco
-      if (member.rol === MemberRole.Invitado) {
-        delete member.parentesco
-      }
-
-      const listRes = await fetch('https://fake-api-smartguard.vercel.app/members')
-      if (!listRes.ok) {
-        alert('No se pudo obtener la lista de miembros')
-        return
-      }
-      const members: Array<{ id: number }> = await listRes.json()
-      const nextId = members.length > 0
-          ? Math.max(...members.map(m => m.id)) + 1
-          : 1
-
-      member.id = nextId
-
-      const res = await fetch('https://fake-api-smartguard.vercel.app/members', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(member)
-      })
-
-      if (!res.ok) {
+      try {
+        const res = await fetch(
+            `${backendUrl}/api/v1/mienbros`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(member),
+            }
+        )
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        alert('Miembro agregado correctamente')
+        await router.push({ name: 'Members' })
+      } catch (err) {
+        console.error(err)
         alert('Error al agregar el miembro')
-        return
       }
-
-      alert('Miembro agregado correctamente')
-      await router.push({ name: 'Members' })
     }
 
-    return { member, submitForm, MemberRole }
-  }
+    return { member, submitForm }
+  },
 })
 </script>
 
@@ -117,7 +112,7 @@ export default defineComponent({
   padding: 2rem;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .form-title {
@@ -191,14 +186,5 @@ export default defineComponent({
 
 .btn-secondary:hover {
   background-color: #c6c6c6;
-}
-
-.box {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
-  appearance: none;
 }
 </style>

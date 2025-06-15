@@ -141,7 +141,7 @@ export default defineComponent({
     const showEnrollModal = ref(false)
     const showRemoveModal = ref(false)
     const currentDeviceId = ref<number | null>(null)
-    const selectedMemberId = ref<number | null>(null)
+    const selectedMemberId = ref<string | null>(null)
     const selectedEnrolledUser = ref<string | null>(null)
 
     onMounted(async () => {

@@ -1,13 +1,12 @@
-export enum MemberRole{
-    Familiar = 'Familiar',
-    Invitado = 'Invitado',
-}
 export interface Member {
-    id: number;
+    /** En GET vendrá desde el back */
+    id?: string;
+
+    /** Campos que el POST espera */
     nombre: string;
     edad: number;
-    rol: MemberRole;
-    parentesco?: string;
+    parentesco?: string;    // opcional si es invitado
     descripcion: string;
-    foto: string;
+    fotoPerfil: string;
+    userNickname?: string;  // opcional, lo es asignado estático
 }
