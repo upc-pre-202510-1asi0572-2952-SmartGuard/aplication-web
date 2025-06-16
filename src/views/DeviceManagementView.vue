@@ -11,13 +11,8 @@
 
       <!-- Device Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <DeviceCard
-            v-for="device in devices"
-            :key="device.id"
-            :ref="el => registerDeviceRef(device.hogarId, el)"
-            :device="device"
-            @enroll="openEnrollModal(device.hogarId)"
-        />
+        <DeviceCard v-for="device in devices" :key="device.id" :ref="el => registerDeviceRef(device.hogarId, el)"
+          :device="device" @enroll="openEnrollModal(device.hogarId)" />
       </div>
 
       <!-- Enroll Modal -->
@@ -51,8 +46,7 @@ import type { Member } from '../interfaces/Member'
 import normalizeKeys from '../utils/normalizeKeys'
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL
-const nickName = 'juancho1234'
-
+const nickName = localStorage.getItem('nickname');
 // Estado
 const devices = ref<Device[]>([])
 const members = ref<Member[]>([])
@@ -141,6 +135,7 @@ async function confirmEnroll() {
 .grid::-webkit-scrollbar {
   width: 8px;
 }
+
 .grid::-webkit-scrollbar-thumb {
   background-color: #cbd5e0;
   border-radius: 4px;

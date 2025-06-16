@@ -116,7 +116,7 @@ import WrapperScreen from '../components/WrapperScreen.vue';
 import type { User } from '../interfaces/User.ts';
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-// Usamos el nickname "gazo" que acabas de crear
+
 
 export default defineComponent({
   name: 'PerfilUsuarioView',
