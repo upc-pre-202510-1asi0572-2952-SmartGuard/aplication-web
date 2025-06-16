@@ -60,7 +60,6 @@ import WrapperScreen from '../components/WrapperScreen.vue'
 import type {Member} from "../interfaces/Member.ts";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-const STATIC_USER_NICKNAME = 'juancho123'
 
 export default defineComponent({
   name: 'MembersView',
@@ -72,8 +71,9 @@ export default defineComponent({
   },
   async mounted() {
     try {
+      const nickname = localStorage.getItem('nickname');
       const res = await fetch(
-          `${backendUrl}/api/v1/miembros/propietario/${STATIC_USER_NICKNAME}`
+          `${backendUrl}/api/v1/miembros/propietario/${nickname}`
       )
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const raw = (await res.json()) as Array<Record<string, any>>

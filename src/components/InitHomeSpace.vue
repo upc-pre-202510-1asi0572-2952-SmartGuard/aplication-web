@@ -1,18 +1,24 @@
-<!-- src/components/InitHomeSpace.vue -->
 <template>
   <div class="p-4 sm:p-8">
+    <!-- Selector de usuario (sólo uno por ahora) -->
+    <div class="mb-6 flex items-center space-x-2">
+      <label class="font-medium">Usuario:</label>
+      <select v-model="selectedNickname" @change="loadHomes" class="border px-3 py-2 rounded">
+        <option :value="nickname">{{ nickname }}</option>
+      </select>
+    </div>
+
     <!-- Indicador de carga -->
     <div v-if="loading" class="flex justify-center items-center h-64">
       <span>Cargando hogares...</span>
     </div>
 
-    <!-- Vista sin hogares -->
+    <!-- Si no hay hogares -->
     <div
         v-else-if="homes.length === 0"
         class="bg-white rounded-2xl shadow-lg flex flex-col md:flex-row items-center md:justify-between
              w-full max-w-6xl mx-auto p-6 sm:p-8 space-y-6 md:space-y-0 md:space-x-6"
     >
-      <!-- Imagen + Texto a la izquierda -->
       <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
         <img
             src="../assets/smart-home/not-home.png"
@@ -21,14 +27,13 @@
         />
         <div class="text-center sm:text-left">
           <h1 class="text-gray-800 text-xl sm:text-2xl font-semibold">
-            No se ha registrado ningún hogar en tu cuenta
+            No hay hogares registrados para “{{ selectedNickname }}”
           </h1>
           <p class="text-gray-600 text-sm sm:text-base">
             Para comenzar, registra un hogar desde el panel principal.
           </p>
         </div>
       </div>
-      <!-- Botón a la derecha (patrón Z) -->
       <Button
           _texto="Registrar Hogar"
           class="w-full md:w-auto bg-blue-500 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-lg"
@@ -36,25 +41,22 @@
       />
     </div>
 
-    <!-- Vista con hogares registrados -->
+    <!-- Lista de hogares -->
     <div v-else class="w-full max-w-6xl mx-auto">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
-        <h2 class="text-2xl font-semibold">Hogares Registrados</h2>
-        <div class="flex flex-col sm:flex-row w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-0 md:space-x-[-1px]">
-          <!-- Agregar Hogar -->
+        <h2 class="text-2xl font-semibold">Hogares de {{ selectedNickname }}</h2>
+        <div class="flex flex-col sm:flex-row w-full sm:w-auto space-y-2 sm:space-y-0 md:space-x-[-1px]">
           <Button
               _texto="Agregar Nuevo Hogar"
               class="w-full sm:w-auto bg-blue-500 text-white font-semibold px-4 sm:px-6 py-2 rounded-t-lg sm:rounded-l-lg"
               @click="onRegisterNext"
           />
-          <!-- Editar Hogar -->
           <router-link to="/home/edit" class="block w-full sm:w-auto">
             <Button
                 _texto="Editar Hogar"
                 class="w-full sm:w-auto bg-orange-500 text-white font-semibold px-4 sm:px-6 py-2"
             />
           </router-link>
-          <!-- Eliminar Hogar -->
           <router-link to="/home/delete" class="block w-full sm:w-auto">
             <Button
                 _texto="Eliminar Hogar"
@@ -66,25 +68,25 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <div
-            v-for="home in homes"
-            :key="home.id"
+            v-for="h in homes"
+            :key="h.id"
             class="border rounded-lg p-4 bg-white shadow flex flex-col"
         >
-          <h3 class="text-lg sm:text-xl font-bold mb-2">{{ home.name }}</h3>
-          <p class="text-sm sm:text-base"><strong>Dirección:</strong> {{ home.address }}</p>
-          <p class="text-sm sm:text-base"><strong>Tipo:</strong> {{ home.propertyType }}</p>
-          <p class="text-sm sm:text-base"><strong>Habitaciones:</strong> {{ home.bedrooms }}</p>
-          <p class="text-sm sm:text-base"><strong>Baños:</strong> {{ home.bathrooms }}</p>
-          <p class="text-sm sm:text-base"><strong>Calefacción:</strong> {{ home.heating ? 'Sí' : 'No' }}</p>
-          <p class="text-sm sm:text-base"><strong>Agua:</strong> {{ home.waterSupply }}</p>
-          <p class="text-sm sm:text-base"><strong>Internet:</strong> {{ home.internetProvider }}</p>
-          <p class="text-sm sm:text-base"><strong>Seguridad:</strong> {{ home.securitySystem }}</p>
-          <p class="text-sm sm:text-base"><strong>Smart Features:</strong> {{ home.smartFeatures }}</p>
+          <h3 class="text-lg sm:text-xl font-bold mb-2">{{ h.nombre }}</h3>
+          <p class="text-sm sm:text-base"><strong>Dirección:</strong> {{ h.direccion }}</p>
+          <p class="text-sm sm:text-base"><strong>Tipo:</strong> {{ h.tipoPropiedad }}</p>
+          <p class="text-sm sm:text-base"><strong>Habitaciones:</strong> {{ h.habitaciones }}</p>
+          <p class="text-sm sm:text-base"><strong>Baños:</strong> {{ h.baños }}</p>
+          <p class="text-sm sm:text-base"><strong>Calefacción:</strong> {{ h.calefaccion ? 'Sí' : 'No' }}</p>
+          <p class="text-sm sm:text-base"><strong>Agua:</strong> {{ h.abastecimientoAgua }}</p>
+          <p class="text-sm sm:text-base"><strong>Internet:</strong> {{ h.proveedorInternet }}</p>
+          <p class="text-sm sm:text-base"><strong>Seguridad:</strong> {{ h.sistemaSeguridad }}</p>
+          <p class="text-sm sm:text-base"><strong>Funciones Inteligentes:</strong> {{ h.funcionesInteligentes }}</p>
           <div class="mt-4">
-            <strong>Foto:</strong>
+            <strong>Imagen:</strong>
             <img
-                :src="home.photoURL"
-                alt="Imagen de {{ home.name }}"
+                :src="h.imgUrl"
+                alt="Imagen de {{ h.nombre }}"
                 class="mt-2 max-h-56 w-full object-cover rounded"
             />
           </div>
@@ -95,42 +97,71 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Button from '../components/shared/Button.vue';
-import type {Home} from "../interfaces/Home.ts";
+import type { Home } from '../interfaces/Home.ts';
 
 export default defineComponent({
   name: 'InitHomeSpace',
   components: { Button },
   emits: ['next'],
   setup(_, { emit }) {
+    const nickname = localStorage.getItem('nickname')??"";
+    const selectedNickname = ref<string>(nickname);
     const homes = ref<Home[]>([]);
-    const loading = ref(true);
-    const selectedHomeId = ref<number | null>(null);
+    const loading = ref<boolean>(true);
 
-    const loadHomes = async () => {
+    async function loadHomes() {
+      loading.value = true;
       try {
-        const res = await fetch('https://fake-api-smartguard.vercel.app/homes');
-        if (!res.ok) throw new Error('Error cargando hogares');
-        homes.value = await res.json();
+        const res = await fetch(
+            `${import.meta.env.VITE_BACKEND_API_URL}/api/v1/hogares/propietario/${selectedNickname.value}`
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        homes.value = (data as any[]).map(d => ({
+          id:                    d.Id,
+          nombre:                d.Nombre,
+          direccion:             d.Direccion,
+          propietarioId:         d.PropietarioId,
+          imgUrl:                d.ImgUrl,
+          tipoPropiedad:         d.TipoPropiedad,
+          habitaciones:          d.Habitaciones,
+          baños:                 d.Baños,
+          calefaccion:           d.Calefaccion,
+          abastecimientoAgua:    d.AbastecimientoAgua,
+          proveedorInternet:     d.ProveedorInternet,
+          sistemaSeguridad:      d.SistemaSeguridad,
+          funcionesInteligentes: d.FuncionesInteligentes,
+          nickname:              d.PropietarioId  // si quieres verlo en el objeto
+        }));
       } catch (e) {
-        console.error(e);
+        console.error('Error cargando hogares:', e);
         homes.value = [];
       } finally {
         loading.value = false;
       }
-    };
+    }
 
-    const onRegisterNext = () => {
+    function onRegisterNext() {
       emit('next');
+    }
+
+    // carga inicial
+    loadHomes();
+
+    return {
+      nickname,
+      selectedNickname,
+      homes,
+      loading,
+      loadHomes,
+      onRegisterNext
     };
-
-    onMounted(loadHomes);
-
-    return { homes, loading, selectedHomeId, onRegisterNext };
   }
 });
 </script>
 
 <style scoped>
+/* Tailwind aplicado directamente en el template */
 </style>

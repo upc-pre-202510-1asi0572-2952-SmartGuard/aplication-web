@@ -1,13 +1,12 @@
 <template>
   <WrapperScreen>
-    <!-- Renderiza solo si user está cargado -->
     <div v-if="user" class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl">
       <h1 class="text-3xl font-semibold">Perfil de usuario</h1>
 
       <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <div class="flex justify-center">
           <img
-              :src="user.foto"
+              :src="user.fotoPerfil"
               alt="Profile"
               class="rounded-full h-40 w-40 object-cover"
           />
@@ -24,7 +23,7 @@
           <label class="mb-1 font-medium">Nombre</label>
           <input
               type="text"
-              :value="user.nombres"
+              :value="user.nombre"
               readonly
               class="border border-gray-300 rounded-lg px-3 py-2"
           />
@@ -33,7 +32,7 @@
           <label class="mb-1 font-medium">Apellido</label>
           <input
               type="text"
-              :value="user.apellidos"
+              :value="user.apellido"
               readonly
               class="border border-gray-300 rounded-lg px-3 py-2"
           />
@@ -42,7 +41,7 @@
           <label class="mb-1 font-medium">Fecha de Nacimiento</label>
           <input
               type="date"
-              :value="user.fechadenacimiento"
+              :value="user.fechaNacimiento.slice(0, 10)"
               readonly
               class="border border-gray-300 rounded-lg px-3 py-2"
           />
@@ -114,7 +113,10 @@
 import { defineComponent } from 'vue';
 import Button from '../components/shared/Button.vue';
 import WrapperScreen from '../components/WrapperScreen.vue';
-import type {User} from "../interfaces/User.ts";
+import type { User } from '../interfaces/User.ts';
+
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+// Usamos el nickname "gazo" que acabas de crear
 
 export default defineComponent({
   name: 'PerfilUsuarioView',
@@ -126,16 +128,34 @@ export default defineComponent({
   },
   async mounted() {
     try {
-      // fetch all users and pick first, porque /users/1 no devuelve nada
-      const res = await fetch('https://fake-api-smartguard.vercel.app/users');
-      console.log('fetch status:', res.status);
-      if (!res.ok) throw new Error('Error cargando usuarios');
-      const users: User[] = await res.json();
-      if (users.length === 0) throw new Error('No hay usuarios disponibles');
-      this.user = users[0];
-      console.log('User data:', this.user);
+      localStorage.getItem('nickname');
+      const nickname = localStorage.getItem('nickname');
+      const res = await fetch(
+          `${backendUrl}/api/v1/usuarioMysql/${nickname}`
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      this.user = {
+        id:              data.Id,
+        nombre:          data.Nombre,
+        apellido:        data.Apellido,
+        Nickname:        data.Nickname,
+        contrasenia:     data.Contrasenia,
+        rutaRostros:     data.RutaRostros,
+        email:           data.Email,
+        telefono:        data.Telefono,
+        fotoPerfil:      data.FotoPerfil,
+        fechaNacimiento: data.FechaNacimiento,
+        genero:          data.Genero,
+        ubicacion:       data.Ubicacion,
+        ocupacion:       data.Ocupacion,
+        direccion:       data.Direccion,
+        // Estos dos son frontend-only para cumplir la interfaz
+        confirmpassword: '',
+        terminos:        false
+      };
     } catch (error) {
-      console.error(error);
+      console.error('Error cargando perfil:', error);
     }
   },
   methods: {
@@ -147,15 +167,15 @@ export default defineComponent({
     },
     async onDeleteAccount() {
       if (!this.user) return;
-      const confirmed = confirm(
-          '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.'
-      );
-      if (!confirmed) return;
+      if (!confirm('¿Eliminar tu cuenta?')) return;
       try {
-        await fetch(`https://fake-api-smartguard.vercel.app/users/${this.user.id}`, { method: 'DELETE' });
+        await fetch(
+            `${backendUrl}/api/v1/usuarioMysql/${encodeURIComponent(this.user.Nickname)}`,
+            { method: 'DELETE' }
+        );
         this.$router.push('/login');
-      } catch (e) {
-        alert('Error al eliminar la cuenta. Intenta de nuevo.');
+      } catch {
+        alert('Error al eliminar la cuenta.');
       }
     }
   }
@@ -163,5 +183,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Tailwind aplicado en clases */
+/* Tailwind aplicado directamente en el template */
 </style>

@@ -32,9 +32,7 @@
           src="../assets/homeregister.webp"
           alt="icon"
       />
-      <div
-          class="absolute rounded-b-4xl top-0 w-full lg:pb-24 bg-[#2A3240]"
-      ></div>
+      <div class="absolute rounded-b-4xl top-0 w-full lg:pb-24 bg-[#2A3240]"></div>
       <form
           @submit.prevent="handleSubmit"
           class="flex flex-col gap-4 w-full max-w-2xl px-4"
@@ -45,27 +43,25 @@
           <InputTexto
               class="w-[300px]"
               _placeholder="Ej. Casa Los Pinos"
-              v-model="home.name"
+              v-model="hogar.nombre"
           />
-          <p class="text-center">
-            Sin inspiración? Intenta uno de estos nombres
-          </p>
+          <p class="text-center">Sin inspiración? Intenta uno de estos nombres</p>
           <div class="flex flex-row justify-center flex-wrap gap-4">
             <Button
                 type="button"
                 _texto="Casa actual"
                 class="rounded-4xl"
-                @click="setName('Casa actual')"
+                @click="setNombre('Casa actual')"
             />
             <Button
                 type="button"
                 _texto="Oficina actual"
-                @click="setName('Oficina actual')"
+                @click="setNombre('Oficina actual')"
             />
             <Button
                 type="button"
                 _texto="Mi lugar feliz"
-                @click="setName('Mi lugar feliz')"
+                @click="setNombre('Mi lugar feliz')"
             />
           </div>
         </div>
@@ -74,54 +70,54 @@
         <div v-if="step === 2" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputTexto
               _placeholder="Dirección"
-              v-model="home.address"
+              v-model="hogar.direccion"
           />
           <InputTexto
-              _placeholder="Tipo de Vivienda"
-              v-model="home.propertyType"
+              _placeholder="Tipo de Propiedad"
+              v-model="hogar.tipoPropiedad"
           />
           <InputTexto
               _placeholder="Número de Habitaciones"
               type="number"
-              v-model.number="home.bedrooms"
+              v-model.number="hogar.habitaciones"
           />
           <InputTexto
               _placeholder="Número de Baños"
               type="number"
-              v-model.number="home.bathrooms"
+              v-model.number="hogar.baños"
           />
         </div>
 
         <!-- Paso 3 -->
         <div v-if="step === 3" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex items-center gap-2">
-            <label class="font-medium">Tiene Calefacción?</label>
+            <label class="font-medium">¿Tiene Calefacción?</label>
             <input
                 type="checkbox"
-                v-model="home.heating"
+                v-model="hogar.calefaccion"
                 class="accent-blue-600"
             />
           </div>
           <InputTexto
-              _placeholder="Proveedor de Agua Potable"
-              v-model="home.waterSupply"
+              _placeholder="Abastecimiento de Agua"
+              v-model="hogar.abastecimientoAgua"
           />
           <InputTexto
               _placeholder="Proveedor de Internet"
-              v-model="home.internetProvider"
+              v-model="hogar.proveedorInternet"
           />
           <InputTexto
-              _placeholder="Proveedor de Sistema de Seguridad"
-              v-model="home.securitySystem"
+              _placeholder="Sistema de Seguridad"
+              v-model="hogar.sistemaSeguridad"
           />
           <InputTexto
-              _placeholder="Número de Dispositivos inteligentes"
+              _placeholder="Funciones Inteligentes"
               type="number"
-              v-model.number="home.smartFeatures"
+              v-model.number="hogar.funcionesInteligentes"
           />
           <InputTexto
-              _placeholder="Imagen de la Vivienda (Copiar URL)"
-              v-model="home.photoURL"
+              _placeholder="URL de la Imagen"
+              v-model="hogar.imgUrl"
           />
         </div>
       </form>
@@ -144,89 +140,89 @@ import { defineComponent, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from './shared/Button.vue'
 import InputTexto from './shared/InputTexto.vue'
-import type {Home} from "../interfaces/Home.ts";
+import type { Home } from '../interfaces/Home.ts'
 
 export default defineComponent({
   name: 'RegisterHomeView',
   components: { Button, InputTexto },
-  emits: ['back', 'registered'],
-  setup(_, { emit }) {
+  setup() {
     const router = useRouter()
     const step = ref(1)
 
-    const home = reactive<Omit<Home,'id'>>({
-      name: '',
-      address: '',
-      propertyType: '',
-      bedrooms: 0,
-      bathrooms: 0,
-      heating: false,
-      waterSupply: '',
-      internetProvider: '',
-      securitySystem: '',
-      smartFeatures: 0,
-      photoURL: ''
+    const hogar = reactive<Omit<Home, 'id'>>({
+      nombre: '',
+      direccion: '',
+      tipoPropiedad: '',
+      habitaciones: 0,
+      baños: 0,
+      calefaccion: false,
+      nickname: 'juancho1234',
+      abastecimientoAgua: '',
+      proveedorInternet: '',
+      sistemaSeguridad: '',
+      funcionesInteligentes: 0,
+      imgUrl: ''
     })
 
-    const setName   = (n: string) => (home.name = n)
-    const prevStep  = () => (step.value > 1 ? step.value-- : emit('back'))
-    const nextStep  = () => step.value < 3 && step.value++
+    const setNombre = (n: string) => (hogar.nombre = n)
+    const prevStep = () => {
+      if (step.value > 1) step.value--
+      else router.back()
+    }
+    const nextStep = () => {
+      if (step.value < 3) step.value++
+    }
     const handleSubmit = () =>
         step.value < 3 ? nextStep() : onFinish()
 
     const onFinish = async () => {
-      const listRes = await fetch('https://fake-api-smartguard.vercel.app/homes')
-      if (!listRes.ok) {
-        alert('No se pudo obtener lista de hogares')
-        return
-      }
-      const homes = (await listRes.json()) as Array<{id: string|number}>
-      const numericIds = homes.map(h => Number(h.id))
-          .filter(n => !isNaN(n))
-      const nextId = numericIds.length > 0
-          ? Math.max(...numericIds) + 1
-          : 1
-      const payload: Home = {
-        id:             nextId,
-        name:           home.name,
-        address:        home.address,
-        propertyType:   home.propertyType,
-        bedrooms:       home.bedrooms,
-        bathrooms:      home.bathrooms,
-        heating:        home.heating,
-        waterSupply:    home.waterSupply,
-        internetProvider: home.internetProvider,
-        securitySystem: home.securitySystem,
-        smartFeatures:  home.smartFeatures,
-        photoURL:       home.photoURL
-      }
+      try {
+        const res = await fetch(
+            `${import.meta.env.VITE_BACKEND_API_URL}/api/v1/hogarMysql`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(hogar)
+            }
+        )
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const data = await res.json()
+        if (!data) throw new Error('Respuesta vacía del servidor')
 
-      const res = await fetch('https://fake-api-smartguard.vercel.app/homes', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload)
-      })
-      if (!res.ok) {
-        alert('No se pudo registrar el hogar. Intenta de nuevo.')
-        return
-      }
+        // Mapear los campos de respuesta con mayúsculas a tu interfaz
+        const creado: Home = {
+          id:                        data.Id ?? data.id,
+          nombre:                    data.Nombre ?? data.nombre,
+          direccion:                 data.Direccion ?? data.address,
+          tipoPropiedad:             data.TipoPropiedad ?? data.propertyType,
+          habitaciones:              data.Habitaciones ?? data.bedrooms,
+          baños:                     data.Baños ?? data.bathrooms,
+          calefaccion:               data.Calefaccion ?? data.heating,
+          nickname:                  data.Nickname ?? hogar.nickname,
+          abastecimientoAgua:        data.AbastecimientoAgua ?? data.waterSupply,
+          proveedorInternet:         data.ProveedorInternet ?? data.internetProvider,
+          sistemaSeguridad:          data.SistemaSeguridad ?? data.securitySystem,
+          funcionesInteligentes:     data.FuncionesInteligentes ?? data.smartFeatures,
+          imgUrl:                    data.ImgUrl ?? data.photoURL
+        }
 
-      const newHome: Home = await res.json()
-      alert(`Hogar registrado correctamente (id: ${newHome.id})`)
-      router.push({ name: 'home' })
+        alert(`Hogar registrado correctamente! ID: ${creado.id}`)
+        router.push({ name: 'home' })
+      } catch (e) {
+        console.error('Error al crear hogar:', e)
+        alert('No se pudo registrar el hogar.')
+      }
     }
 
     return {
       step,
-      home,
-      setName,
+      hogar,
+      setNombre,
       prevStep,
       handleSubmit
     }
   }
 })
 </script>
-
-
 
 <style scoped></style>

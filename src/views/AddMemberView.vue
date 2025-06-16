@@ -61,7 +61,6 @@ import type {Member} from "../interfaces/Member.ts";
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-const STATIC_USER_NICKNAME = 'juancho123'
 
 export default defineComponent({
   name: 'AddMemberView',
@@ -76,9 +75,9 @@ export default defineComponent({
       fotoPerfil: '',
       // userNickname se asigna justo después
     })
-
+    const nickname = localStorage.getItem('nickname')??"";
     // acaasignamos el userNickname estático antes de enviar
-    member.userNickname = STATIC_USER_NICKNAME
+    member.userNickname = nickname
 
     const submitForm = async () => {
       try {
