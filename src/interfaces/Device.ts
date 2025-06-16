@@ -1,11 +1,9 @@
 export interface Device {
-    id: number;
-    name: string;
-    cameraFeed: string;
-    motionDetected: boolean;
-    ledOn: boolean;
-    firmware: string;
-    battery: number;
-    enrolledUsers?: string[];
-
+    id: string
+    modelo: string
+    porcentajeBateria: number
+    puerta: boolean
+    firmware: string
+    hogarNombre: string
+    hogarId: string
 }
