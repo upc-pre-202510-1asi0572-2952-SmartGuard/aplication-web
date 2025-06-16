@@ -8,5 +8,17 @@ export interface Member {
     parentesco?: string;    // opcional si es invitado
     descripcion: string;
     fotoPerfil: string;
-    userNickname?: string;  // opcional, lo es asignado estático
+    userNickname?: string;// opcional, lo es asignado estático
+    userId: string;
+}
+
+export interface MemberHome {
+    id: string
+    nombre: string
+    edad: number
+    parentesco: string
+    descripcion: string
+    fotoPerfil: string
+    userId: string,
+    estatus: string
 }
