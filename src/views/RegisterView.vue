@@ -22,7 +22,7 @@
           <!-- Campos obligatorios -->
           <InputTexto _placeholder="Nombre" v-model="user.nombre" />
           <InputTexto _placeholder="Apellido" v-model="user.apellido" />
-          <InputTexto _placeholder="Nickname" v-model="user.nickname" />
+          <InputTexto _placeholder="Nickname" v-model="user.Nickname" />
           <InputTexto _placeholder="Correo electrónico" v-model="user.email" />
           <InputTexto _placeholder="Contraseña" type="password" v-model="user.contrasenia" />
 
@@ -77,7 +77,7 @@ export default defineComponent({
     const user = reactive<Partial<User>>({
       nombre: '',
       apellido: '',
-      nickname: '',
+      Nickname: '',
       contrasenia: '',
       rutaRostros: '',
       email: '',
@@ -104,7 +104,7 @@ export default defineComponent({
         const payload = {
           Nombre: user.nombre,
           Apellido: user.apellido,
-          Nickname: user.nickname,
+          Nickname: user.Nickname,
           Contrasenia: user.contrasenia,
           RutaRostros: user.rutaRostros,
           Email: user.email,

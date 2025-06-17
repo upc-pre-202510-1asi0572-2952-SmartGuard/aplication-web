@@ -68,10 +68,7 @@
 
         <!-- Paso 2 -->
         <div v-if="step === 2" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <InputTexto
-              _placeholder="Dirección"
-              v-model="hogar.direccion"
-          />
+          <InputTexto _placeholder="Dirección" v-model="hogar.direccion" />
           <InputTexto
               _placeholder="Tipo de Propiedad"
               v-model="hogar.tipoPropiedad"
@@ -134,20 +131,20 @@
     </div>
   </div>
 </template>
-<!-- registro  -->
+
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import Button from './shared/Button.vue'
-import InputTexto from './shared/InputTexto.vue'
-import type { Home } from '../interfaces/Home.ts'
+import { defineComponent, ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import Button from './shared/Button.vue';
+import InputTexto from './shared/InputTexto.vue';
+import type { Home } from '../interfaces/Home.ts';
 
 export default defineComponent({
   name: 'RegisterHomeView',
   components: { Button, InputTexto },
   setup() {
-    const router = useRouter()
-    const step = ref(1)
+    const router = useRouter();
+    const step = ref(1);
 
     const hogar = reactive<Omit<Home, 'id'>>({
       nombre: '',
@@ -156,24 +153,24 @@ export default defineComponent({
       habitaciones: 0,
       baños: 0,
       calefaccion: false,
-      nickname: 'juancho1234',
+      nickname: localStorage.getItem('nickname') || '',
       abastecimientoAgua: '',
       proveedorInternet: '',
       sistemaSeguridad: '',
       funcionesInteligentes: 0,
       imgUrl: ''
-    })
+    });
 
-    const setNombre = (n: string) => (hogar.nombre = n)
+    const setNombre = (n: string) => (hogar.nombre = n);
     const prevStep = () => {
-      if (step.value > 1) step.value--
-      else router.back()
-    }
+      if (step.value > 1) step.value--;
+      else router.back();
+    };
     const nextStep = () => {
-      if (step.value < 3) step.value++
-    }
+      if (step.value < 3) step.value++;
+    };
     const handleSubmit = () =>
-        step.value < 3 ? nextStep() : onFinish()
+        step.value < 3 ? nextStep() : onFinish();
 
     const onFinish = async () => {
       try {
@@ -184,35 +181,20 @@ export default defineComponent({
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(hogar)
             }
-        )
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-        if (!data) throw new Error('Respuesta vacía del servidor')
+        );
 
-        // Mapear los campos de respuesta con mayúsculas a tu interfaz
-        const creado: Home = {
-          id:                        data.Id ?? data.id,
-          nombre:                    data.Nombre ?? data.nombre,
-          direccion:                 data.Direccion ?? data.address,
-          tipoPropiedad:             data.TipoPropiedad ?? data.propertyType,
-          habitaciones:              data.Habitaciones ?? data.bedrooms,
-          baños:                     data.Baños ?? data.bathrooms,
-          calefaccion:               data.Calefaccion ?? data.heating,
-          nickname:                  data.Nickname ?? hogar.nickname,
-          abastecimientoAgua:        data.AbastecimientoAgua ?? data.waterSupply,
-          proveedorInternet:         data.ProveedorInternet ?? data.internetProvider,
-          sistemaSeguridad:          data.SistemaSeguridad ?? data.securitySystem,
-          funcionesInteligentes:     data.FuncionesInteligentes ?? data.smartFeatures,
-          imgUrl:                    data.ImgUrl ?? data.photoURL
+        if (!res.ok) {
+          alert('No se pudo registrar el hogar.');
+          return;
         }
 
-        alert(`Hogar registrado correctamente! ID: ${creado.id}`)
-        router.push({ name: 'home' })
-      } catch (e) {
-        console.error('Error al crear hogar:', e)
-        alert('No se pudo registrar el hogar.')
+        alert(`✅ Hogar registrado correctamente!`);
+        router.push({ name: 'home' });
+      } catch (error) {
+        console.error('Red:', error);
+        alert('Error de red, no se pudo registrar el hogar.');
       }
-    }
+    };
 
     return {
       step,
@@ -220,9 +202,9 @@ export default defineComponent({
       setNombre,
       prevStep,
       handleSubmit
-    }
+    };
   }
-})
+});
 </script>
 
 <style scoped></style>

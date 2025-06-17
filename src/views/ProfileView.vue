@@ -170,9 +170,10 @@ export default defineComponent({
       if (!confirm('¿Eliminar tu cuenta?')) return;
       try {
         await fetch(
-            `${backendUrl}/api/v1/usuarioMysql/${encodeURIComponent(this.user.Nickname)}`,
+            `${backendUrl}/api/v1/usuarioMysql/${encodeURIComponent(this.user.id)}`,
             { method: 'DELETE' }
         );
+        localStorage.clear();
         this.$router.push('/login');
       } catch {
         alert('Error al eliminar la cuenta.');

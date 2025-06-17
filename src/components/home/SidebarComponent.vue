@@ -15,39 +15,54 @@
         <div class="px-2 flex flex-row justify-start gap-2 items-center">
           <img
               v-if="currentUser"
-              :src="currentUser.foto"
+              :src="currentUser.fotoPerfil"
               alt="Foto de perfil"
               class="w-6 h-6 object-cover rounded-full shadow-md"
           />
           <div class="hidden lg:flex flex-col gap-0">
             <span class="text-gray-600 text-sm">Bienvenido a casa,</span>
-            <span class="text-black font-bold">{{ currentUser?.nombres }}</span>
+            <span class="text-black font-bold">{{ currentUser?.nombre }}</span>
           </div>
         </div>
-        <LinkButton
-            v-for="(link, i) in links"
-            :key="i"
-            :text="link.text"
-            :iconClass="link.iconClass"
-            :route="link.route"
-            class="min-w-max"
-        />
+        <!-- Links -->
+        <template v-for="(link, i) in links" :key="i">
+          <LinkButton
+              v-if="link.text !== 'Salir'"
+              :text="link.text"
+              :iconClass="link.iconClass"
+              :route="link.route"
+              class="min-w-max"
+          />
+        </template>
+        <!-- Botón de Logout -->
+        <button
+            @click="logout"
+            class="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 rounded min-w-max"
+        >
+          <i class="pi pi-sign-out"></i>
+          <span>Salir</span>
+        </button>
       </nav>
     </div>
   </aside>
 </template>
 
+
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import LinkButton from './LinkButton.vue';
 import Button from '../shared/Button.vue';
-import type {User} from "../../interfaces/User.ts";
+import type { User } from '../../interfaces/User.ts';
 
 interface Link {
   text: string;
   iconClass: string;
   route: string;
 }
+
+const router = useRouter();
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL!;
 
 const links = ref<Link[]>([
   { text: 'Hogar', iconClass: 'pi pi-home', route: '/home' },
@@ -59,7 +74,7 @@ const links = ref<Link[]>([
   { text: 'Configuraciones', iconClass: 'pi pi-cog', route: '/configuration' },
   { text: 'Conseguir Premium', iconClass: 'pi pi-star', route: '/membership' },
   { text: 'Ayuda y Soporte', iconClass: 'pi pi-question-circle', route: '/support' },
-  { text: 'Salir', iconClass: 'pi pi-sign-out', route: '/login' }
+  // quitamos el link de 'Salir' aquí para manejarlo aparte
 ]);
 
 const isExpanded = ref(false);
@@ -77,11 +92,33 @@ const currentUser = ref<User | null>(null);
 onMounted(async () => {
   updateWidth();
   window.addEventListener('resize', updateWidth);
+
   try {
-    const res = await fetch('https://fake-api-smartguard.vercel.app/users');
-    if (!res.ok) throw new Error('Error al obtener usuarios');
-    const users: User[] = await res.json();
-    currentUser.value = users[0] || null;
+    const nickname = localStorage.getItem('nickname');
+    if (!nickname) throw new Error('No hay usuario logueado');
+    const res = await fetch(
+        `${backendUrl}/api/v1/usuarioMysql/${encodeURIComponent(nickname)}`
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const d = await res.json();
+    currentUser.value = {
+      id:               d.Id,
+      nombre:           d.Nombre,
+      apellido:         d.Apellido,
+      Nickname:         d.Nickname,
+      contrasenia:      d.Contrasenia,
+      rutaRostros:      d.RutaRostros,
+      email:            d.Email,
+      telefono:         d.Telefono,
+      fotoPerfil:       d.FotoPerfil,
+      fechaNacimiento:  d.FechaNacimiento,
+      genero:           d.Genero,
+      ubicacion:        d.Ubicacion,
+      ocupacion:        d.Ocupacion,
+      direccion:        d.Direccion,
+      confirmpassword:  '',
+      terminos:         false
+    };
   } catch (e) {
     console.error(e);
   }
@@ -90,6 +127,12 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateWidth);
 });
+
+// Función de logout
+function logout() {
+  localStorage.removeItem('nickname');
+  router.push({ name: 'login' });
+}
 </script>
 
 <style scoped>
