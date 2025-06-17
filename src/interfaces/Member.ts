@@ -9,7 +9,7 @@ export interface Member {
     descripcion: string;
     fotoPerfil: string;
     userNickname?: string;// opcional, lo es asignado estático
-    userId: string;
+    userId?: string;
 }
 
 export interface MemberHome {

@@ -51,36 +51,51 @@
                                     </span>
                                 </div>
                                 <ToggleSwitch v-model="miembro.estatus" @update:modelValue="(value) => onToggleChange(value, miembro.id)" />
-                            </div>
+                           </div>
+                          <img
+                              :src="`https://quickchart.io/qr?text=${frontendUrl}/public/${miembro.id}&size=200`"
+                              alt="QR Code"
+                              class="w-25 h-25"
+                          />
+                          <button
+                              @click="goToPublic(miembro.id)"
+                              class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition"
+                          >
+                            Ver acceso
+                          </button>
                         </div>
+
                     </li>
                 </ul>
             </div>
+
         </div>
 
+
         <!-- Actions -->
+      <div class="flex justify-center item-center">
         <button @click="$emit('enroll', device.hogarId)"
             class="flex-1 py-2 bg-indigo-500 text-white rounded-full font-medium hover:bg-indigo-600 transition">
             Inscribir Miembro
         </button>
-
+      </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+
 import type { MemberHome } from '../../interfaces/Member'
 import type { Device } from '../../interfaces/Device';
 import normalizeKeys from '../../utils/normalizeKeys';
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-
+const frontendUrl = import.meta.env.VITE_FRONTEND_API_URL;
 const props = defineProps<{
     device: Device
 }>()
-const emits = defineEmits<{
+defineEmits<{
     (e: 'enroll', hogarId: string): void
 }>()
-
 
 const members = ref<MemberHome[]>([])
 
@@ -118,6 +133,13 @@ const loadMembers = async () => {
     }
 }
 
+function goToPublic(memberId: string) {
+  window.open(`${frontendUrl}/public/${memberId}`, '_blank')
+}
+
 onMounted(loadMembers)
 defineExpose({ loadMembers })
 </script>
+<style>
+
+</style>

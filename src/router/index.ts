@@ -24,6 +24,7 @@ import DeleteHomeView from "../views/DeleteHomeView.vue";
 import EditMemberView from "../views/EditMemberView.vue";
 import EditProfileView from "../views/EditProfileView.vue";
 import ChangeUserPasswordView from "../views/ChangeUserPasswordView.vue";
+import PublicDataByMemberId from "../views/PublicDataByMemberId.vue";
 
 const routes = [
   { path: "", redirect: "splashview" },
@@ -52,6 +53,7 @@ const routes = [
   { path: "/support/documentation", name: "documentation", component: Documentation, meta: { requiresAuth: true } }, // autentica esto
   { path: "/membership", name: "Membership", component: MembershipView, meta: { requiresAuth: true } }, // autentica esto
   { path: "/register", name: "register", component: RegisterView },
+  { path: "/public/:id", name: "PublicDataByMemberId", component: PublicDataByMemberId },
 ];
 
 const router = createRouter({
@@ -63,12 +65,12 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const isLoggedIn = !!localStorage.getItem("nickname");
 
-  // Si la ruta requiere auth y no está logueado → login
+  // Si la ruta requiere auth y no está logueado -> login
   if (to.meta.requiresAuth && !isLoggedIn) {
     return next({ name: "login" });
   }
 
-  // Si está logueado y va a login → home
+  // Si está logueado y va a login -> home
   if (to.name === "login" && isLoggedIn) {
     return next({ name: "home" });
   }
