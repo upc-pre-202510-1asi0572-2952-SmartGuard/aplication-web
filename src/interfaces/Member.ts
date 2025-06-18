@@ -1,15 +1,13 @@
 export interface Member {
-    /** En GET vendrá desde el back */
     id?: string;
-
-    /** Campos que el POST espera */
     nombre: string;
     edad: number;
-    parentesco?: string;    // opcional si es invitado
+    parentesco?: string;
     descripcion: string;
     fotoPerfil: string;
-    userNickname?: string;// opcional, lo es asignado estático
+    userNickname?: string;
     userId?: string;
+    dni: string;
 }
 
 export interface MemberHome {
@@ -21,4 +19,7 @@ export interface MemberHome {
     fotoPerfil: string
     userId: string,
     estatus: string
+    dni: string;
 }
+
+

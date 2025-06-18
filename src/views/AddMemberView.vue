@@ -1,92 +1,110 @@
 <template>
   <WrapperScreen>
-    <div class="form-wrapper">
-      <h1 class="form-title">Agregar Miembro</h1>
-      <form @submit.prevent="submitForm" class="form">
-        <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input id="nombre" v-model="member.nombre" required />
-        </div>
 
-        <div class="form-group">
-          <label for="edad">Edad</label>
-          <input
-              id="edad"
-              type="number"
-              v-model.number="member.edad"
-              min="0"
-              max="100"
+
+
+    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow p-8 mt-8">
+      <h1 class="text-2xl font-semibold mb-6">Agregar Miembro </h1>
+      <div class="space-y-4">
+        <h2 class="text-xl font-medium mb-4">Agregar Miembro</h2>
+        <form @submit.prevent="submitForm" class="grid grid-cols-1 gap-4">
+          <InputTexto
+              label="Nombre"
+              v-model="member.nombre"
               required
           />
-        </div>
-
-        <div class="form-group">
-          <label for="parentesco">Parentesco</label>
-          <input id="parentesco" v-model="member.parentesco" />
-        </div>
-
-        <div class="form-group">
-          <label for="descripcion">Descripción</label>
-          <textarea
-              id="descripcion"
+          <InputTexto
+              label="Edad"
+              type="number"
+              v-model="member.edad"
+              min="0"
+              required
+          />
+          <InputTexto
+              label="Parentesco"
+              v-model="member.parentesco"
+              required
+          />
+          <InputTexto
+              label="Descripcion"
               v-model="member.descripcion"
               required
-          ></textarea>
-        </div>
+          />
+          <InputTexto
+              label="URL FotoPerfil"
+              v-model="member.fotoPerfil"
+              required
+          />
+<!--          <InputTexto
+              label="DNI"
+              v-model="member.dni"
+              required
+          />-->
+          <div class="flex justify-center mt-4 space-x-4">
+            <Button
+                type="submit"
+                _texto="Guardar Cambios"
+                class="bg-green-600 "
+            />
+            <Button
+                _texto="Cancelar"
+                type="button"
+                @click="cancel"
+                class="bg-gray-500 "
+            />
 
-        <div class="form-group">
-          <label for="fotoPerfil">URL FotoPerfil</label>
-          <input id="fotoPerfil" v-model="member.fotoPerfil" required />
-        </div>
+          </div>
 
-        <div class="button-group">
-          <button type="submit" class="btn btn-primary">Guardar</button>
-          <button
-              type="button"
-              @click="$router.back()"
-              class="btn btn-secondary"
-          >
-            Cancelar
-          </button>
-        </div>
-      </form>
+
+
+        </form>
+      </div>
     </div>
+
+
   </WrapperScreen>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import {defineComponent, ref} from 'vue'
 import { useRouter } from 'vue-router'
 import type {Member} from "../interfaces/Member.ts";
+import InputTexto from "../components/shared/InputTexto.vue";
 
-
+const initalMember={
+  id: '',
+  nombre: '',
+  edad: 0,
+  parentesco: '',
+  descripcion: '',
+  fotoPerfil: '',
+  dni:''
+}
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-
+const nickname = localStorage.getItem('nickname')??"";
 export default defineComponent({
   name: 'AddMemberView',
+  components: {InputTexto},
   setup() {
     const router = useRouter()
 
-    const member = reactive<Member>({
-      nombre: '',
-      edad: 0,
-      parentesco: '',
-      descripcion: '',
-      fotoPerfil: '',
-      // userNickname se asigna justo después
-    })
-    const nickname = localStorage.getItem('nickname')??"";
-    // acaasignamos el userNickname estático antes de enviar
-    member.userNickname = nickname
+    const member = ref<Member>(initalMember);
+
+    const cancel = () => {
+      router.push({ name: 'Members' });
+    };
 
     const submitForm = async () => {
       try {
+        const body=member.value;
+        const request={...body,userNickname:nickname}
+        console.log(request)
         const res = await fetch(
             `${backendUrl}/api/v1/mienbros`,
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(member),
+              body: JSON.stringify(request),
             }
         )
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -98,92 +116,10 @@ export default defineComponent({
       }
     }
 
-    return { member, submitForm }
+    return { member, submitForm,cancel }
   },
 })
 </script>
 
 <style scoped>
-.form-wrapper {
-  max-width: 800px;
-  width: 90%;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.form-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.form-group input,
-.form-group textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #4a90e2;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-primary {
-  background-color: #4a90e2;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #357abd;
-}
-
-.btn-secondary {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.btn-secondary:hover {
-  background-color: #c6c6c6;
-}
 </style>

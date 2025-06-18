@@ -2,34 +2,9 @@
   <WrapperScreen>
     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow p-8 mt-8">
       <h1 class="text-2xl font-semibold mb-6">Editar Miembro por ID</h1>
-
-      <!-- Paso 1: introducir ID -->
-      <div v-if="step === 1" class="space-y-4">
-        <InputTexto
-            _placeholder="ID del Miembro"
-            v-model="inputId"
-        />
-        <p v-if="errorMsg" class="text-red-600 text-sm">{{ errorMsg }}</p>
-        <div class="flex justify-center gap-4">
-          <button
-              @click="loadMember"
-              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Cargar
-          </button>
-          <button
-              @click="cancel"
-              class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
-          >
-            Cancelar
-          </button>
-        </div>
-      </div>
-
-      <!-- Paso 2: formulario -->
-      <div v-else class="space-y-4">
-        <h2 class="text-xl font-medium mb-4">Editando Miembro ID: {{ member.id }}</h2>
-        <form @submit.prevent="editMember" class="grid grid-cols-1 gap-4">
+      <div class="space-y-4">
+        <h2 class="text-xl font-medium mb-4">Editando Miembro</h2>
+        <form @submit.prevent="onUpdateMember" class="grid grid-cols-1 gap-4">
           <!-- Nombre -->
           <InputTexto
               label="Nombre"
@@ -62,29 +37,32 @@
                 class="input-box textarea-box"
             ></textarea>
           </div>
-
+<!--          <InputTexto
+              label="DNI"
+              v-model="member.dni"
+              required
+          />-->
           <!-- FotoPerfil -->
           <InputTexto
               label="URL FotoPerfil"
               v-model="member.fotoPerfil"
               required
           />
-
+          <img v-if="member.fotoPerfil" :src="member.fotoPerfil" alt="Foto perfil" class="w-52 h-36 object-cover rounded mt-2" />
           <!-- Botones -->
           <div class="flex justify-center mt-4 space-x-4">
-            <button
+            <Button
                 type="submit"
-                class="bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700"
-            >
-              Guardar Cambios
-            </button>
-            <button
+                _texto="Guardar Cambios"
+                class="bg-green-600 "
+            />
+            <Button
+                _texto="Cancelar"
                 type="button"
                 @click="cancel"
-                class="bg-gray-500 text-white px-8 py-2 rounded-lg hover:bg-gray-600"
-            >
-              Cancelar
-            </button>
+                class="bg-gray-500 "
+            />
+
           </div>
         </form>
       </div>
@@ -93,90 +71,68 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, ref } from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import WrapperScreen from "../components/WrapperScreen.vue";
 import InputTexto from "../components/shared/InputTexto.vue";
-import type { Member } from "../interfaces/Member.ts";
+
+import normalizeKeys from "../utils/normalizeKeys.ts";
+import type {Member} from "../interfaces/Member.ts";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-
+const initalMember={
+  id: '',
+  nombre: '',
+  edad: 0,
+  parentesco: '',
+  descripcion: '',
+  fotoPerfil: '',
+  dni:''
+}
 export default defineComponent({
   name: 'EditMemberView',
   components: { WrapperScreen, InputTexto },
   setup() {
     const router = useRouter();
-    const step = ref(1);
-    const inputId = ref<string>('');
+    const route = useRoute();
+    const selectedMemberId = route.params.id;
     const errorMsg = ref<string>('');
+    const member = ref<Member>(initalMember);
 
-    const member = reactive<Member>({
-      id: '',
-      nombre: '',
-      edad: 0,
-      parentesco: '',
-      descripcion: '',
-      fotoPerfil: '',
-      userNickname: ''  // almacenamos pero no editamos
-    });
-
-    const loadMember = async () => {
+    const loadSelectedMember = async () => {
       errorMsg.value = '';
-      if (!inputId.value.trim()) {
+      if (!selectedMemberId) {
         errorMsg.value = 'Ingresa un ID válido.';
         return;
       }
       try {
-        const res = await fetch(
-            `${backendUrl}/api/v1/miembroMysql/${inputId.value.trim()}`
+        const resMem = await fetch(
+            `${backendUrl}/api/v1/miembroMysql/${selectedMemberId}`
         );
-        if (res.status === 404) {
-          errorMsg.value = `No existe un miembro con ID ${inputId.value}.`;
+        if (resMem.status === 404) {
+          errorMsg.value = `No existe un miembro con ID ${selectedMemberId}.`;
           return;
         }
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const d = await res.json();
-        member.id            = d.Id;
-        member.userNickname  = d.UserId;
-        member.nombre        = d.Nombre;
-        member.edad          = d.Edad;
-        member.parentesco    = d.Parentesco;
-        member.descripcion   = d.Descripcion;
-        member.fotoPerfil    = d.FotoPerfil;
-        step.value = 2;
+        if (!resMem.ok) throw new Error(`HTTP ${resMem.status}`);
+        const memberData:Member = await resMem.json();
+        member.value = normalizeKeys(memberData);
+
       } catch (e) {
         errorMsg.value = 'Error al cargar el miembro.';
         console.error(e);
       }
     };
 
-    const editMember = async () => {
-      if (
-          !member.nombre.trim() ||
-          member.edad === null ||
-          !member.descripcion.trim() ||
-          !member.fotoPerfil.trim()
-      ) {
-        alert('Completa todos los campos antes de guardar.');
-        return;
-      }
-      if (!confirm(`¿Guardar cambios para ID ${member.id}?`)) return;
+    const onUpdateMember = async () => {
 
       try {
-        const payload = {
-          id:          member.id,
-          nombre:      member.nombre,
-          edad:        member.edad,
-          parentesco:  member.parentesco,
-          descripcion: member.descripcion,
-          fotoPerfil:  member.fotoPerfil
-        };
+        const request = member.value;
         const res = await fetch(
             `${backendUrl}/api/v1/miembroMysql`,
             {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
+              body: JSON.stringify(request),
             }
         );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -192,13 +148,13 @@ export default defineComponent({
       router.push({ name: 'Members' });
     };
 
+    loadSelectedMember();
+
     return {
-      step,
-      inputId,
       errorMsg,
       member,
-      loadMember,
-      editMember,
+      loadSelectedMember,
+      onUpdateMember,
       cancel
     };
   }

@@ -1,13 +1,16 @@
 <template>
   <WrapperScreen>
-    <div class="max-w-7xl mx-auto py-8 px-4 space-y-8">
       <!-- Header -->
-      <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 class="text-4xl font-bold text-gray-800">Gestión de Dispositivos</h1>
-          <p class="mt-1 text-gray-600">Administra tus dispositivos IoT y controla el acceso de tu hogar.</p>
-        </div>
-      </div>
+      <HeaderView
+          title="Gestión de Dispositivos"
+          subtitle="Administra tus dispositivos IoT y controla el acceso de tu hogar."
+      />
+    <EmptyView
+        v-if="devices.length === 0"
+        title="No hay dispositivos registrados "
+        description="Para comenzar, registra un hogar desde el panel principal."
+    />
+
 
       <!-- Device Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -33,7 +36,6 @@
           </div>
         </div>
       </div>
-    </div>
   </WrapperScreen>
 </template>
 
@@ -44,6 +46,7 @@ import DeviceCard from '../components/device/DeviceCard.vue'
 import type { Device } from '../interfaces/Device'
 import type { Member } from '../interfaces/Member'
 import normalizeKeys from '../utils/normalizeKeys'
+import HeaderView from "../components/ui/HeaderView.vue";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL
 const nickName = localStorage.getItem('nickname');

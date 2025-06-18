@@ -71,13 +71,9 @@
 
         </div>
 
-
         <!-- Actions -->
       <div class="flex justify-center item-center">
-        <button @click="$emit('enroll', device.hogarId)"
-            class="flex-1 py-2 bg-indigo-500 text-white rounded-full font-medium hover:bg-indigo-600 transition">
-            Inscribir Miembro
-        </button>
+        <Button class="bg-indigo-500  font-medium w-full"  _texto="Inscribir Miembro" @click="$emit('enroll', device.hogarId)"/>
       </div>
     </div>
 </template>

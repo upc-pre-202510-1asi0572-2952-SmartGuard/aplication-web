@@ -15,7 +15,7 @@
         <div class="px-2 flex flex-row justify-start gap-2 items-center">
           <img
               v-if="currentUser"
-              :src="currentUser.fotoPerfil"
+              :src="currentUser.photoUrl"
               alt="Foto de perfil"
               class="w-6 h-6 object-cover rounded-full shadow-md"
           />
@@ -53,7 +53,23 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LinkButton from './LinkButton.vue';
 import Button from '../shared/Button.vue';
-import type { User } from '../../interfaces/User.ts';
+import normalizeKeys from "../../utils/normalizeKeys.ts";
+import type {Profile} from "../../interfaces/Profile.ts";
+const initialProfile = {
+  id: '',
+  nombre: '',
+  apellido: '',
+  email: '',
+  telefono: '',
+  fechaNacimiento: '',
+  genero: '',
+  ubicacion: '',
+  ocupacion: '',
+  direccion: '',
+  contrasenia:'',
+  photoUrl:'',
+};
+
 
 interface Link {
   text: string;
@@ -87,7 +103,7 @@ const toggleMenu = () => {
   isExpanded.value = !isExpanded.value;
 };
 
-const currentUser = ref<User | null>(null);
+const currentUser = ref<Profile>(initialProfile);
 
 onMounted(async () => {
   updateWidth();
@@ -97,28 +113,11 @@ onMounted(async () => {
     const nickname = localStorage.getItem('nickname');
     if (!nickname) throw new Error('No hay usuario logueado');
     const res = await fetch(
-        `${backendUrl}/api/v1/usuarioMysql/${encodeURIComponent(nickname)}`
+        `${backendUrl}/api/v1/usuarioMysql/${nickname}`
     );
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const d = await res.json();
-    currentUser.value = {
-      id:               d.Id,
-      nombre:           d.Nombre,
-      apellido:         d.Apellido,
-      Nickname:         d.Nickname,
-      contrasenia:      d.Contrasenia,
-      rutaRostros:      d.RutaRostros,
-      email:            d.Email,
-      telefono:         d.Telefono,
-      fotoPerfil:       d.FotoPerfil,
-      fechaNacimiento:  d.FechaNacimiento,
-      genero:           d.Genero,
-      ubicacion:        d.Ubicacion,
-      ocupacion:        d.Ocupacion,
-      direccion:        d.Direccion,
-      confirmpassword:  '',
-      terminos:         false
-    };
+    const data:Profile  = await res.json();
+    currentUser.value= normalizeKeys(data)
   } catch (e) {
     console.error(e);
   }
