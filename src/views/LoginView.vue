@@ -1,7 +1,7 @@
 <template>
   <section class="w-screen h-screen flex flex-col md:flex-row bg-gray-200 text-black overflow-auto">
 
-    <!-- Sección Izquierda -->
+    <!-- Sección Izquierda (sin cambios) -->
     <section class="w-full md:w-1/2 bg-gray-100 flex flex-col items-center justify-center p-8">
       <img class="mb-6 xl:w-2xl md:w-60" src="../assets/smart-home/house-smart.png" alt="Logo" />
       <div class="text-center max-w-sm">
@@ -106,7 +106,9 @@ import Button from '../components/shared/Button.vue';
 import IngreseConGoogle from '../components/login/IngreseConGoolge.vue';
 import IngreseConFacebook from '../components/login/IngreseConFacebook.vue';
 import IngreseConApple from '../components/login/IngreseConApple.vue';
-import type { User } from '../interfaces/User';
+import type { User } from '../interfaces/User.ts';
+
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 export default defineComponent({
   name: 'LoginView',
@@ -131,22 +133,31 @@ export default defineComponent({
     const onLogin = async () => {
       errorMessage.value = '';
       try {
-        const res = await fetch('https://fake-api-smartguard.vercel.app/users');
-        if (!res.ok) throw new Error('Error obteniendo usuarios');
-        const users: User[] = await res.json();
-        const match = users.find(
-            u => u.email === loginEmail.value && u.password === loginPassword.value
-        );
-        if (!match) {
-          errorMessage.value = 'Email o contraseña incorrectos';
+        const res = await fetch(`${backendUrl}/api/v1/logeo`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: loginEmail.value,
+            password: loginPassword.value
+          })
+        });
+        if (!res.ok) {
+          if (res.status === 401) {
+            errorMessage.value = 'Credenciales incorrectas';
+          } else {
+            throw new Error(`HTTP ${res.status}`);
+          }
           return;
         }
-        if (rememberMe.value) {
-          localStorage.setItem('loggedUser', JSON.stringify(match));
-        }
+
+        // Asumimos que el POST devuelve el objeto User
+        const user: User = await res.json();
+
+        localStorage.setItem('nickname', user.Nickname);
+
         router.push('/home');
       } catch (e) {
-        console.error(e);
+        console.error('Error al iniciar sesión:', e);
         errorMessage.value = 'No se pudo iniciar sesión. Intenta de nuevo.';
       }
     };

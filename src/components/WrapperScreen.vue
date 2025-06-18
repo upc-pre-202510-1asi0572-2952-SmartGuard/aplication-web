@@ -2,8 +2,9 @@
     <div class="flex flex-col md:flex-row h-full min-h-screen bg-gray-100">
         <SidebarComponent/>
         <main class="w-full lg:w-[85%] flex flex-col justify-center items-center gap-10 text-black px-4 py-6">
-
+          <div class="p-4 sm:p-8">
             <slot></slot>
+          </div>
         </main>
     </div>
 </template>

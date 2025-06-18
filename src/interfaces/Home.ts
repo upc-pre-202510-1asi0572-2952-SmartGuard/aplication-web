@@ -1,14 +1,18 @@
 export interface Home {
-    id: number;
-    name: string;
-    address: string;
-    propertyType: string;
-    bedrooms: number;
-    bathrooms: number;
-    heating: boolean;
-    waterSupply: string;
-    internetProvider: string;
-    securitySystem: string;
-    smartFeatures: number;
-    photoURL: string;
+    /** Id generado por el backend (GUID) */
+    id?: string;
+
+    /** Campos que envías al crear */
+    nombre: string;
+    direccion: string;
+    tipoPropiedad: string;
+    habitaciones: number;
+    baños: number;
+    calefaccion: boolean;
+    nickname: string;
+    abastecimientoAgua: string;
+    proveedorInternet: string;
+    sistemaSeguridad: string;
+    funcionesInteligentes: number;
+    imgUrl: string;
 }

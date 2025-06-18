@@ -1,156 +1,132 @@
-
 <template>
   <WrapperScreen>
-    <div class="form-wrapper">
-      <h1 class="form-title">Eliminar Miembro</h1>
-      <form @submit.prevent class="form">
-        <div class="form-group">
-          <label for="memberId">ID del Miembro</label>
-          <input
-              id="memberId"
-              type="number"
-              v-model.number="memberId"
-              min="1"
-              required
-              class="input-box"
+    <div class="mx-auto bg-white rounded-xl shadow p-8 mt-8">
+      <h1 class="text-2xl font-semibold mb-6 text-red-600">
+        Eliminar Miembro
+      </h1>
+      <p v-if="errorMsg" class="text-red-600 text-sm">{{ errorMsg }}</p>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-xl font-bold truncate">{{ member.nombre }}</h2>
+
+        <div class="text-sm w-full flex justify-between gap-4">
+          <span class="font-bold">Edad:</span>
+          <span>{{ member.edad }}</span>
+        </div>
+
+        <div class="text-sm w-full flex justify-between gap-4" v-if="member.parentesco">
+          <span class="font-bold">Parentesco:</span>
+          <span>{{ member.parentesco }}</span>
+        </div>
+
+        <div class="text-sm w-full flex justify-between gap-4">
+          <span class="font-bold">Descripción:</span>
+          <span class="text-right">{{ member.descripcion }}</span>
+        </div>
+
+        <img
+            v-if="member.fotoPerfil"
+            :src="member.fotoPerfil"
+            :alt="`Foto de ${member.nombre}`"
+            class="w-full h-48 object-cover rounded mt-2"
+        />
+
+        <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+          <Button
+              @click="onDeleteMember"
+              class="bg-red-600 font-semibold"
+              _texto="Confirmar Eliminación"
           />
+          <Button @click="cancel" _texto="Cancelar" class="bg-gray-300 font-bold" />
         </div>
-        <div class="button-group">
-          <button type="button" class="btn btn-danger" @click="deleteMember">Eliminar</button>
-          <button type="button" @click="cancel" class="btn btn-secondary">Cancelar</button>
-        </div>
-      </form>
+      </div>
     </div>
   </WrapperScreen>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import WrapperScreen from "../components/WrapperScreen.vue"
+import { defineComponent, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import WrapperScreen from '../components/WrapperScreen.vue';
+import Button from '../components/shared/Button.vue';
+import type { Member } from '../interfaces/Member';
+import normalizeKeys from '../utils/normalizeKeys.ts';
+
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+
+const initialMember: Member = {
+  id: '',
+  nombre: '',
+  edad: 0,
+  parentesco: '',
+  descripcion: '',
+  fotoPerfil: '',
+  dni:'',
+  userNickname: '',
+};
 
 export default defineComponent({
   name: 'DeleteMemberView',
-  components: { WrapperScreen },
+  components: { WrapperScreen, Button },
   setup() {
-    const router = useRouter()
-    const memberId = ref<number | null>(null)
+    const route = useRoute();
+    const router = useRouter();
+    const memberId = route.params.id;
+    const errorMsg = ref('');
+    const member = ref<Member>(initialMember);
 
-    const deleteMember = async () => {
-      if (!memberId.value) {
-        alert('Ingrese un ID válido')
-        return
+    async function loadSelectedMember() {
+      errorMsg.value = '';
+      if (!memberId) {
+        errorMsg.value = 'ID de miembro inválido.';
+        return;
       }
-      const confirmed = confirm(
-          `¿Estás seguro de eliminar el miembro con ID ${memberId.value}? Esta acción es irreversible.`
-      )
-      if (!confirmed) return
-
       try {
-        const res = await fetch(
-            `https://fake-api-smartguard.vercel.app/members/${memberId.value}`,
-            { method: 'DELETE' }
-        )
-        if (res.ok) {
-          alert(`Miembro con ID ${memberId.value} eliminado correctamente`)
-          router.push({ name: 'Members' })
-        } else {
-          alert(`Error al eliminar el miembro. Status: ${res.status}`)
+        const res = await fetch(`${backendUrl}/api/v1/miembroMysql/${memberId}`);
+        if (res.status === 404) {
+          errorMsg.value = `No existe un miembro con ID ${memberId}.`;
+          return;
         }
-      } catch (error: any) {
-        console.error('Error al eliminar miembro:', error)
-        alert(`Error al eliminar: ${error.message}`)
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const memberData: Member = await res.json();
+        member.value = normalizeKeys(memberData);
+      } catch (e) {
+        errorMsg.value = 'Error al cargar el miembro.';
+        console.error(e);
       }
     }
+
+    const onDeleteMember = async () => {
+      if (!memberId) return;
+      if (!confirm(`¿Eliminar el miembro “${member.value.nombre}”?`)) return;
+      try {
+        const res = await fetch(`${backendUrl}/api/v1/miembroMysql/${memberId}`, {
+          method: 'DELETE'
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        alert('👤 Miembro eliminado correctamente.');
+        router.push({ name: 'Members' });
+      } catch (err) {
+        errorMsg.value = 'Error al eliminar el miembro.';
+        console.error(err);
+      }
+    };
 
     const cancel = () => {
-      router.back()
-    }
+      router.push({ name: 'Members' });
+    };
 
-    return { memberId, deleteMember, cancel }
+    loadSelectedMember();
+
+    return {
+      member,
+      errorMsg,
+      onDeleteMember,
+      cancel
+    };
   }
-})
+});
 </script>
 
 <style scoped>
-.form-wrapper {
-  max-width: 500px;
-  width: 90%;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.form-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.input-box {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-}
-
-.input-box:focus {
-  outline: none;
-  border-color: #e53e3e;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-danger {
-  background-color: #e53e3e;
-  color: #fff;
-}
-
-.btn-danger:hover {
-  background-color: #c53030;
-}
-
-.btn-secondary {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.btn-secondary:hover {
-  background-color: #c6c6c6;
-}
+/* Usa clases utilitarias de Tailwind */
 </style>

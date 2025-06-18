@@ -1,93 +1,104 @@
-<!-- src/components/InitHomeSpace.vue -->
 <template>
   <div class="p-4 sm:p-8">
+    <!-- Header -->
+    <HeaderView
+        :title="`Gestión de Hogares de “${nickname}”`"
+        subtitle="Gestiona tus Hogares IoT y controla el acceso de tu hogar."
+    >
+      <template #actions>
+        <Button
+            _texto="Agregar Nuevo Hogar"
+            class="bg-blue-500 text-white font-semibold w-full"
+            @click="onRegisterNext"
+        />
+      </template>
+    </HeaderView>
+
+    <!-- Si no hay hogares -->
+    <EmptyView
+        v-if="homes.length === 0"
+        :title="`No hay hogares registrados para “${nickname}”`"
+        description="Para comenzar, registra un hogar desde el panel principal."
+    />
+
     <!-- Indicador de carga -->
     <div v-if="loading" class="flex justify-center items-center h-64">
       <span>Cargando hogares...</span>
     </div>
+    <!-- Lista de hogares -->
+      <div class="flex flex-col items-center sm:flex-row justify-between sm:items-center mb-6  w-full gap-4">
 
-    <!-- Vista sin hogares -->
-    <div
-        v-else-if="homes.length === 0"
-        class="bg-white rounded-2xl shadow-lg flex flex-col md:flex-row items-center md:justify-between
-             w-full max-w-6xl mx-auto p-6 sm:p-8 space-y-6 md:space-y-0 md:space-x-6"
-    >
-      <!-- Imagen + Texto a la izquierda -->
-      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-        <img
-            src="../assets/smart-home/not-home.png"
-            alt="Sin hogares"
-            class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
-        />
-        <div class="text-center sm:text-left">
-          <h1 class="text-gray-800 text-xl sm:text-2xl font-semibold">
-            No se ha registrado ningún hogar en tu cuenta
-          </h1>
-          <p class="text-gray-600 text-sm sm:text-base">
-            Para comenzar, registra un hogar desde el panel principal.
-          </p>
-        </div>
-      </div>
-      <!-- Botón a la derecha (patrón Z) -->
-      <Button
-          _texto="Registrar Hogar"
-          class="w-full md:w-auto bg-blue-500 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-lg"
-          @click="onRegisterNext"
-      />
-    </div>
-
-    <!-- Vista con hogares registrados -->
-    <div v-else class="w-full max-w-6xl mx-auto">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
-        <h2 class="text-2xl font-semibold">Hogares Registrados</h2>
-        <div class="flex flex-col sm:flex-row w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-0 md:space-x-[-1px]">
-          <!-- Agregar Hogar -->
-          <Button
-              _texto="Agregar Nuevo Hogar"
-              class="w-full sm:w-auto bg-blue-500 text-white font-semibold px-4 sm:px-6 py-2 rounded-t-lg sm:rounded-l-lg"
-              @click="onRegisterNext"
-          />
-          <!-- Editar Hogar -->
-          <router-link to="/home/edit" class="block w-full sm:w-auto">
-            <Button
-                _texto="Editar Hogar"
-                class="w-full sm:w-auto bg-orange-500 text-white font-semibold px-4 sm:px-6 py-2"
-            />
-          </router-link>
-          <!-- Eliminar Hogar -->
-          <router-link to="/home/delete" class="block w-full sm:w-auto">
-            <Button
-                _texto="Eliminar Hogar"
-                class="w-full sm:w-auto bg-red-500 text-white font-semibold px-4 sm:px-6 py-2 rounded-b-lg sm:rounded-r-lg"
-            />
-          </router-link>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-            v-for="home in homes"
-            :key="home.id"
-            class="border rounded-lg p-4 bg-white shadow flex flex-col"
+            v-for="h in homes"
+            :key="h.id"
+            class="bg-white rounded-2xl shadow hover:shadow-lg transform hover:scale-[1.02] transition p-6 flex flex-col gap-2"
         >
-          <h3 class="text-lg sm:text-xl font-bold mb-2">{{ home.name }}</h3>
-          <p class="text-sm sm:text-base"><strong>Dirección:</strong> {{ home.address }}</p>
-          <p class="text-sm sm:text-base"><strong>Tipo:</strong> {{ home.propertyType }}</p>
-          <p class="text-sm sm:text-base"><strong>Habitaciones:</strong> {{ home.bedrooms }}</p>
-          <p class="text-sm sm:text-base"><strong>Baños:</strong> {{ home.bathrooms }}</p>
-          <p class="text-sm sm:text-base"><strong>Calefacción:</strong> {{ home.heating ? 'Sí' : 'No' }}</p>
-          <p class="text-sm sm:text-base"><strong>Agua:</strong> {{ home.waterSupply }}</p>
-          <p class="text-sm sm:text-base"><strong>Internet:</strong> {{ home.internetProvider }}</p>
-          <p class="text-sm sm:text-base"><strong>Seguridad:</strong> {{ home.securitySystem }}</p>
-          <p class="text-sm sm:text-base"><strong>Smart Features:</strong> {{ home.smartFeatures }}</p>
+          <h3 class="text-lg sm:text-xl font-bold mb-2">{{ h.nombre }}</h3>
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Dirección:</span>
+            <span>{{h.direccion}}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Tipo:</span>
+            <span>{{ h.tipoPropiedad }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Habitaciones:</span>
+            <span>{{ h.habitaciones }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Baños:</span>
+            <span>{{ h.baños }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Calefacción:</span>
+            <span>{{ h.calefaccion ? 'Sí' : 'No' }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Agua:</span>
+            <span>{{ h.abastecimientoAgua }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Internet:</span>
+            <span>{{ h.proveedorInternet }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Seguridad:</span>
+            <span>{{ h.sistemaSeguridad }}</span>
+          </div>
+
+          <div class="text-sm sm:text-base w-full flex justify-between gap-4">
+            <span class="font-bold">Funciones Inteligentes:</span>
+            <span>{{ h.funcionesInteligentes }}</span>
+          </div>
           <div class="mt-4">
-            <strong>Foto:</strong>
+            <strong>Imagen:</strong>
             <img
-                :src="home.photoURL"
-                alt="Imagen de {{ home.name }}"
+                :src="h.imgUrl"
+                :alt="`Imagen de ${h.nombre }`"
                 class="mt-2 max-h-56 w-full object-cover rounded"
             />
           </div>
+          <router-link :to="`/home/edit/${h.id}`" class="block w-full sm:w-auto">
+            <Button
+                _texto="Editar Hogar"
+                class="bg-orange-500 text-white font-semibold w-full"
+            />
+          </router-link>
+          <router-link :to="`/home/delete/${h.id}`"  class="block w-full sm:w-auto">
+            <Button
+                _texto="Eliminar Hogar"
+                class="bg-red-500 text-white font-semibold w-full  "
+            />
+          </router-link>
         </div>
       </div>
     </div>
@@ -95,42 +106,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Button from '../components/shared/Button.vue';
-import type {Home} from "../interfaces/Home.ts";
+import type { Home } from '../interfaces/Home.ts';
+import normalizeKeys from "../utils/normalizeKeys.ts";
+import HeaderView from "./ui/HeaderView.vue";
 
 export default defineComponent({
   name: 'InitHomeSpace',
-  components: { Button },
+  components: {HeaderView, Button },
   emits: ['next'],
   setup(_, { emit }) {
+    const nickname = localStorage.getItem('nickname')??"";
+ 
     const homes = ref<Home[]>([]);
-    const loading = ref(true);
-    const selectedHomeId = ref<number | null>(null);
+    const loading = ref<boolean>(true);
 
-    const loadHomes = async () => {
+    async function loadHomes() {
+      loading.value = true;
       try {
-        const res = await fetch('https://fake-api-smartguard.vercel.app/homes');
-        if (!res.ok) throw new Error('Error cargando hogares');
-        homes.value = await res.json();
+        const hogarRes = await fetch(
+            `${import.meta.env.VITE_BACKEND_API_URL}/api/v1/hogares/propietario/${nickname}`
+        );
+        if (!hogarRes.ok) throw new Error(`HTTP ${hogarRes.status}`);
+        const hogarData = await hogarRes.json();
+
+        homes.value = hogarData.map(normalizeKeys)
+
       } catch (e) {
-        console.error(e);
+        console.error('Error cargando hogares:', e);
         homes.value = [];
       } finally {
         loading.value = false;
       }
-    };
+    }
 
-    const onRegisterNext = () => {
+    function onRegisterNext() {
       emit('next');
+    }
+
+    loadHomes();
+
+    return {
+      nickname,
+      homes,
+      loading,
+      loadHomes,
+      onRegisterNext
     };
-
-    onMounted(loadHomes);
-
-    return { homes, loading, selectedHomeId, onRegisterNext };
   }
 });
 </script>
 
 <style scoped>
+/* Tailwind aplicado directamente en el template */
 </style>

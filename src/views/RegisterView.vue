@@ -19,12 +19,12 @@
         </header>
 
         <main class="flex flex-col gap-4">
-          <!-- Campos básicos -->
-          <InputTexto _placeholder="Nombres" v-model="user.nombres" />
-          <InputTexto _placeholder="Apellidos" v-model="user.apellidos" />
+          <!-- Campos obligatorios -->
+          <InputTexto _placeholder="Nombre" v-model="user.nombre" />
+          <InputTexto _placeholder="Apellido" v-model="user.apellido" />
+          <InputTexto _placeholder="Nickname" v-model="user.Nickname" />
           <InputTexto _placeholder="Correo electrónico" v-model="user.email" />
-          <InputTexto _placeholder="Contraseña" type="password" v-model="user.password" />
-          <InputTexto _placeholder="Confirmar contraseña" type="password" v-model="user.confirmpassword" />
+          <InputTexto _placeholder="Contraseña" type="password" v-model="user.contrasenia" />
 
           <!-- Opciones avanzadas -->
           <a class="text-blue-400 text-sm hover:underline" @click="toggleAdvanced">
@@ -34,14 +34,11 @@
             <InputTexto _placeholder="Teléfono" v-model="user.telefono" />
             <InputTexto _placeholder="Ubicación" v-model="user.ubicacion" />
             <InputTexto _placeholder="Dirección" v-model="user.direccion" />
-            <InputTexto _placeholder="Fecha de nacimiento" type="date" v-model="user.fechadenacimiento" />
+            <InputTexto _placeholder="Fecha de nacimiento" type="date" v-model="user.fechaNacimiento" />
             <InputTexto _placeholder="Género" v-model="user.genero" />
             <InputTexto _placeholder="Ocupación" v-model="user.ocupacion" />
-            <InputTexto _placeholder="URL de foto de perfil" v-model="user.foto" />
-            <div class="flex items-center gap-2">
-              <input type="checkbox" v-model="user.terminos" class="accent-blue-600 focus:ring-0" />
-              <label class="text-sm text-gray-700">Acepto términos y condiciones</label>
-            </div>
+            <InputTexto _placeholder="URL de foto de perfil" v-model="user.fotoPerfil" />
+            <InputTexto _placeholder="Ruta Rostros" v-model="user.rutaRostros" />
           </div>
 
           <!-- Botón de registro -->
@@ -66,13 +63,9 @@ import { defineComponent, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import InputTexto from '../components/shared/InputTexto.vue';
 import Button from '../components/shared/Button.vue';
-import type { User } from '../interfaces/User';
+import type { User } from '../interfaces/User.ts';
 
-interface RegisterUser extends Omit<User, 'id'> {
-  password: string;
-  confirmpassword: string;
-  terminos: boolean;
-}
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL as string;
 
 export default defineComponent({
   name: 'RegisterView',
@@ -80,56 +73,63 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const user = reactive<RegisterUser>({
-      nombres: '',
-      apellidos: '',
+    // Sólo los campos que el endpoint JSON POST /api/v1/usuarioMysql espera
+    const user = reactive<Partial<User>>({
+      nombre: '',
+      apellido: '',
+      Nickname: '',
+      contrasenia: '',
+      rutaRostros: '',
       email: '',
       telefono: '',
-      ubicacion: '',
-      direccion: '',
-      fechadenacimiento: '',
+      fotoPerfil: '',
+      fechaNacimiento: '',
       genero: '',
+      ubicacion: '',
       ocupacion: '',
-      foto: '',
-      password: '',
-      confirmpassword: '',
-      terminos: false
+      direccion: ''
     });
 
     const showAdvanced = ref(false);
-    const toggleAdvanced = () => showAdvanced.value = !showAdvanced.value;
+    const toggleAdvanced = () => (showAdvanced.value = !showAdvanced.value);
 
     const onRegister = async () => {
-      // Validaciones básicas
-      if (!user.password || user.password !== user.confirmpassword) {
-        alert('Las contraseñas no coinciden');
-        return;
-      }
-      if (!user.terminos) {
-        alert('Debes aceptar términos y condiciones');
+      // Validación mínima
+      if (!user.contrasenia) {
+        alert('Ingresa una contraseña');
         return;
       }
 
       try {
-        // Revisar lista usuarios y calcular nextId
-        const listRes = await fetch('https://fake-api-smartguard.vercel.app/users');
-        if (!listRes.ok) throw new Error('No se pudo obtener lista de usuarios');
-        const users: Array<{id: number}> = await listRes.json();
-        const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+        const payload = {
+          Nombre: user.nombre,
+          Apellido: user.apellido,
+          Nickname: user.Nickname,
+          Contrasenia: user.contrasenia,
+          RutaRostros: user.rutaRostros,
+          Email: user.email,
+          Telefono: user.telefono,
+          FotoPerfil: user.fotoPerfil,
+          FechaNacimiento: user.fechaNacimiento,
+          Genero: user.genero,
+          Ubicacion: user.ubicacion,
+          Ocupacion: user.ocupacion,
+          Direccion: user.direccion
+        };
 
-        const payload: any = { id: nextId, ...user };
-
-        const res = await fetch('https://fake-api-smartguard.vercel.app/users', {
+        const res = await fetch(`${backendUrl}/api/v1/usuarioMysql`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error('Error al registrar usuario');
-        const newUser = await res.json();
-        console.log('Usuario registrado con id numérico:', newUser.id);
-        router.push('/home');
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        console.log('Usuario creado:', data);
+
+        router.push('/login');
       } catch (error) {
-        console.error(error);
+        console.error('Error al registrar usuario:', error);
         alert('Hubo un problema al registrar. Intenta nuevamente.');
       }
     };
