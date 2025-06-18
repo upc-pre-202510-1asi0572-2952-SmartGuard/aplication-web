@@ -20,7 +20,6 @@ declare module 'vue' {
     IngreseConFacebook: typeof import('./src/components/login/IngreseConFacebook.vue')['default']
     IngreseConGoolge: typeof import('./src/components/login/IngreseConGoolge.vue')['default']
     InitHomeSpace: typeof import('./src/components/InitHomeSpace.vue')['default']
-    InputText: typeof import('primevue/inputtext')['default']
     InputTexto: typeof import('./src/components/shared/InputTexto.vue')['default']
     LineChart: typeof import('./src/components/statistics/LineChart.vue')['default']
     LinkButton: typeof import('./src/components/home/LinkButton.vue')['default']

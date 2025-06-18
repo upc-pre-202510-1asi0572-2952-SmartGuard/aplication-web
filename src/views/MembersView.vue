@@ -113,8 +113,7 @@ const loadMembers = async () => {
 onMounted(loadMembers);
 
 const goToAdd = () => router.push({ name: 'AddMember' });
-const goToEdit = () => router.push({ name: 'EditMember' });
-const goToDelete = () => router.push({ name: 'DeleteMember' });
+
 </script>
 
 <style scoped></style>

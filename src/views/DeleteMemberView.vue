@@ -60,6 +60,7 @@ const initialMember: Member = {
   parentesco: '',
   descripcion: '',
   fotoPerfil: '',
+  dni:'',
   userNickname: '',
 };
 
