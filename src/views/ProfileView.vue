@@ -1,23 +1,24 @@
 <template>
   <WrapperScreen>
-    <div v-if="profile" class="flex flex-col rounded-2xl gap-10 max-w-6xl w-full px-5 py-10 bg-white shadow-2xl">
-      <h1 class="text-3xl font-semibold">Perfil de usuario</h1>
+    <div v-if="profile" class="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-xl px-6 py-10 flex flex-col gap-10">
+      <h1 class="text-3xl font-semibold text-center sm:text-left">Perfil de usuario</h1>
 
-      <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         <div class="flex justify-center">
-          <img :src="profile.photoUrl" alt="Profile" class="rounded-full h-40 w-40 object-cover" />
+          <img :src="profile.photoUrl" alt="Foto de perfil" class="rounded-full w-40 h-40 object-cover border shadow" />
         </div>
-        <div class="flex flex-col justify-center gap-4">
+
+        <div class="flex flex-col gap-4 items-center md:items-start">
           <Button _texto="Editar Usuario" @click="onEditUser" _color="bg-blue-500" />
           <Button _texto="Cambiar Contraseña" @click="onChangePassword" _color="bg-blue-500" />
           <Button _texto="Eliminar cuenta" @click="onDeleteAccount" _color="bg-red-500" />
         </div>
       </section>
 
-      <section class="grid grid-cols-2 gap-4 text-black">
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <InputTexto label="Nombre" v-model="profile.nombre" />
         <InputTexto label="Apellido" v-model="profile.apellido" />
-        <InputTexto label="Fecha de Nacimiento" v-model="profile.fechaNacimiento" type="date" />
+        <InputTexto label="Fecha de Nacimiento" v-model="fechaNacimientoFormateada" type="date" />
         <InputTexto label="Género" v-model="profile.genero" />
         <InputTexto label="Ocupación" v-model="profile.ocupacion" />
         <InputTexto label="Email" v-model="profile.email" type="email" />
@@ -27,19 +28,17 @@
       </section>
     </div>
 
-    <div v-else class="p-10 text-center text-gray-500">
-      Cargando perfil…
-    </div>
+    <div v-else class="p-10 text-center text-gray-500">Cargando perfil…</div>
   </WrapperScreen>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import WrapperScreen from '../components/WrapperScreen.vue';
 import Button from '../components/shared/Button.vue';
-import normalizeKeys from "../utils/normalizeKeys.ts";
-import type {Profile} from "../interfaces/Profile.ts"; // Un input readonly reutilizable
+import normalizeKeys from "../utils/normalizeKeys";
+import type { Profile } from "../interfaces/Profile";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 const nickname = localStorage.getItem('nickname') || '';
@@ -47,29 +46,25 @@ const errorMsg = ref<string>('');
 const profile = ref<Profile | null>(null);
 const router = useRouter();
 
-async function loadSelectedProfile(){
+async function loadSelectedProfile() {
   errorMsg.value = '';
 
   try {
-    const profileRes = await fetch(
-        `${backendUrl}/api/v1/usuarioMysql/${nickname}`
-    );
-
-    if (profileRes.status === 404) {
+    const res = await fetch(`${backendUrl}/api/v1/usuarioMysql/${nickname}`);
+    if (res.status === 404) {
       errorMsg.value = `No existe un nickname ${nickname}.`;
       return;
     }
-    if (!profileRes.ok) throw new Error(`HTTP ${profileRes.status}`);
-    const profileData:Profile = await profileRes.json();
-    console.log(profileData)
-    console.log(normalizeKeys(profileData))
-    profile.value = normalizeKeys(profileData);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data: Profile = await res.json();
+    profile.value = normalizeKeys(data);
   } catch (err) {
-    errorMsg.value = 'Error perfil';
-    console.error('Error cargando perfil:', err);
+    errorMsg.value = 'Error al cargar perfil.';
+    console.error(err);
   }
 }
-
 
 onMounted(loadSelectedProfile);
 
@@ -90,4 +85,13 @@ const onDeleteAccount = async () => {
     alert('Error al eliminar la cuenta.');
   }
 };
+
+const fechaNacimientoFormateada = computed({
+  get() {
+    return profile.value?.fechaNacimiento?.split('T')[0] || '';
+  },
+  set(value: string) {
+    if (profile.value) profile.value.fechaNacimiento = value;
+  }
+});
 </script>

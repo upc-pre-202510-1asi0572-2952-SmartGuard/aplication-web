@@ -35,11 +35,11 @@
               v-model="member.fotoPerfil"
               required
           />
-<!--          <InputTexto
+          <InputTexto
               label="DNI"
               v-model="member.dni"
               required
-          />-->
+          />
           <div class="flex justify-center mt-4 space-x-4">
             <Button
                 type="submit"
