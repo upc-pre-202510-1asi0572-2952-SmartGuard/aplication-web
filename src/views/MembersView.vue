@@ -43,6 +43,7 @@
             </h4>
             <span>Edad: {{ miembro.edad }}</span>
             <span v-if="miembro.parentesco">Parentesco: {{ miembro.parentesco }}</span>
+            <span v-if="miembro.dni">DNI: {{ miembro.dni }}</span>
           </div>
 
           <div class="flex items-center">
@@ -55,13 +56,13 @@
 
             <router-link :to="`/members/edit/${miembro.id}`" class="block w-full sm:w-auto">
               <Button
-                  _texto="Editar Hogar"
+                  _texto="Editar miembro"
                   class="font-semibold w-full"
               />
             </router-link>
             <router-link :to="`/members/delete/${miembro.id}`"  class="block w-full sm:w-auto">
               <Button
-                  _texto="Eliminar Hogar"
+                  _texto="Eliminar miembro"
                   class="font-semibold w-full  "
               />
             </router-link>
@@ -83,6 +84,7 @@ import HeaderView from '../components/ui/HeaderView.vue';
 import EmptyView from '../components/ui/EmptyView.vue';
 import Button from '../components/shared/Button.vue';
 import type { Member } from '../interfaces/Member.ts';
+import normalizeKeys from "../utils/normalizeKeys.ts";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 const nickname = localStorage.getItem('nickname') || '';
@@ -95,15 +97,7 @@ const loadMembers = async () => {
     const res = await fetch(`${backendUrl}/api/v1/miembros/propietario/${nickname}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const raw = await res.json();
-    miembros.value = raw.map((item: any) => ({
-      id: item.Id,
-      nombre: item.Nombre,
-      edad: item.Edad,
-      parentesco: item.Parentesco,
-      descripcion: item.Descripcion,
-      fotoPerfil: item.FotoPerfil,
-      userNickname: item.UserId,
-    }));
+    miembros.value = raw.map(normalizeKeys)
   } catch (err) {
     console.error('Error al cargar miembros:', err);
     miembros.value = [];

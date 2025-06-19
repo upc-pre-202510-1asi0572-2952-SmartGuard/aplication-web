@@ -1,39 +1,36 @@
 <template>
   <WrapperScreen>
     <HeaderView
-        title="Gestión de Dispositivos"
+        title="Gestión de Accesos"
         subtitle="Gestiona tus accesos IoT"
     />
 
     <EmptyView
-        v-if="dispositivos.length === 0"
-        title="No hay dispositivos registrados"
-        description="Para comenzar, registra un hogar desde el panel principal."
+        v-if="accesos.length === 0"
+        title="No hay registros de acceso"
+        description="Aún no se han generado eventos de acceso."
     />
 
-    <div class="max-w-6xl mx-auto py-8 px-4">
+    <div class="max-w-6xl mx-auto py-8 px-4" v-if="accesos.length > 0">
       <div class="bg-white p-6 rounded-2xl shadow space-y-8">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h1 class="text-3xl font-semibold">Dispositivos</h1>
+          <h1 class="text-3xl font-semibold">Historial de Accesos</h1>
         </div>
 
         <div class="bg-white p-4 rounded-xl shadow space-y-6">
           <!-- Mobile Cards -->
           <div class="block sm:hidden space-y-4">
             <div
-                v-for="dis in dispositivos"
-                :key="dis.id"
+                v-for="acc in accesos"
+                :key="acc.id"
                 class="p-4 border border-gray-200 rounded-lg"
             >
-              <p><span class="font-medium">Modelo:</span> {{ dis.modelo }}</p>
-              <p><span class="font-medium">Firmware:</span> {{ dis.firmware }}</p>
-              <p><span class="font-medium">Batería:</span> {{ dis.porcentajeBateria }}%</p>
-              <p><span class="font-medium">Puerta Abierta:</span>
-                <span :class="dis.puerta ? 'text-green-600' : 'text-red-600'">
-                  {{ dis.puerta ? 'Sí' : 'No' }}
-                </span>
-              </p>
-              <p><span class="font-medium">Hogar:</span> {{ dis.hogarNombre }}</p>
+              <p><span class="font-medium">Miembro:</span> {{ acc.nombreMienbro }}</p>
+              <p><span class="font-medium">Dispositivo:</span> {{ acc.dispositivo }}</p>
+              <p><span class="font-medium">Resultado:</span> {{ acc.resultado }}</p>
+              <p><span class="font-medium">Hogar:</span> {{ acc.nombreHogar }}</p>
+              <p><span class="font-medium">Dirección:</span> {{ acc.direccion }}</p>
+              <p><span class="font-medium">Fecha:</span> {{ formatFecha(acc.fechaHora) }}</p>
             </div>
           </div>
 
@@ -42,32 +39,30 @@
             <table class="min-w-full bg-white text-left rounded-lg shadow-sm">
               <thead>
               <tr class="border-b">
-                <th class="px-4 py-2">Modelo</th>
-                <th class="px-4 py-2">Firmware</th>
-                <th class="px-4 py-2">Batería</th>
-                <th class="px-4 py-2">Puerta</th>
+                <th class="px-4 py-2">Miembro</th>
+                <th class="px-4 py-2">Dispositivo</th>
+                <th class="px-4 py-2">Resultado</th>
                 <th class="px-4 py-2">Hogar</th>
+                <th class="px-4 py-2">Dirección</th>
+                <th class="px-4 py-2">Fecha</th>
               </tr>
               </thead>
               <tbody>
               <tr
-                  v-for="dis in dispositivos"
-                  :key="dis.id"
+                  v-for="acc in accesos"
+                  :key="acc.id"
                   class="border-t hover:bg-gray-50"
               >
-                <td class="px-4 py-2">{{ dis.modelo }}</td>
-                <td class="px-4 py-2">{{ dis.firmware }}</td>
-                <td class="px-4 py-2">{{ dis.porcentajeBateria }}%</td>
-                <td class="px-4 py-2">
-                    <span :class="dis.puerta ? 'text-green-600' : 'text-red-600'">
-                      {{ dis.puerta ? 'Sí' : 'No' }}
-                    </span>
-                </td>
-                <td class="px-4 py-2">{{ dis.hogarNombre }}</td>
+                <td class="px-4 py-2">{{ acc.nombreMienbro }}</td>
+                <td class="px-4 py-2">{{ acc.dispositivo }}</td>
+                <td class="px-4 py-2">{{ acc.resultado }}</td>
+                <td class="px-4 py-2">{{ acc.nombreHogar }}</td>
+                <td class="px-4 py-2">{{ acc.direccion }}</td>
+                <td class="px-4 py-2">{{ formatFecha(acc.fechaHora) }}</td>
               </tr>
-              <tr v-if="dispositivos.length === 0">
-                <td colspan="5" class="px-4 py-2 text-center text-gray-500">
-                  No hay dispositivos registrados.
+              <tr v-if="accesos.length === 0">
+                <td colspan="6" class="px-4 py-2 text-center text-gray-500">
+                  No hay accesos registrados.
                 </td>
               </tr>
               </tbody>
@@ -80,30 +75,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import normalizeKeys from '../utils/normalizeKeys'
-import type {Access} from "../interfaces/Access.ts";
+import { ref, onMounted } from 'vue';
+import normalizeKeys from '../utils/normalizeKeys';
+import type { Access } from '../interfaces/Access.ts';
 
+const accesos = ref<Access[]>([]);
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+const nickname = localStorage.getItem('nickname') ?? '';
 
-const dispositivos = ref<Access[]>([])
-const backendUrl = import.meta.env.VITE_BACKEND_API_URL
-const nickname = localStorage.getItem('nickname') ?? ''
-
-const loadDispositivos = async () => {
-  if (!nickname) return
+const loadAccesos = async () => {
+  if (!nickname) return;
   try {
-    const res = await fetch(`${backendUrl}/api/v1/dispositivos/${nickname}`)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = await res.json()
-    dispositivos.value = data.map(normalizeKeys);
+    const res = await fetch(`${backendUrl}/api/v1/accesos/${nickname}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    accesos.value = data.map(normalizeKeys);
   } catch (err) {
-    console.error('Error al cargar dispositivos:', err)
+    console.error('Error al cargar accesos:', err);
   }
+};
+
+// Formatea la fecha ISO a formato legible: "dd/mm/yyyy hh:mm"
+function formatFecha(fechaIso: string): string {
+  const date = new Date(fechaIso);
+  return date.toLocaleString('es-PE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
 }
 
-onMounted(loadDispositivos)
+onMounted(loadAccesos);
 </script>
 
 <style scoped>
-/* Custom styles if needed */
+/* Estilos personalizados si se requieren */
 </style>

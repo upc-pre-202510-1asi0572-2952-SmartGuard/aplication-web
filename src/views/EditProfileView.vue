@@ -11,7 +11,7 @@
           <InputTexto label="Apellido" v-model="profile.apellido" required />
           <InputTexto label="Email" type="email" v-model="profile.email" required />
           <InputTexto label="Teléfono" type="tel" v-model="profile.telefono" required />
-          <InputTexto label="Fecha de Nacimiento" type="date" v-model="profile.fechaNacimiento" required />
+          <InputTexto label="Fecha de Nacimiento" type="date" v-model="fechaNacimientoFormateada" required />
           <InputTexto label="Género" v-model="profile.genero" required />
           <InputTexto label="Ubicación" v-model="profile.ubicacion" required />
           <InputTexto label="Dirección" v-model="profile.direccion" required />
@@ -25,23 +25,27 @@
         <!-- Botones -->
         <div class="flex justify-center mt-4 gap-4">
           <Button type="submit" _texto="Guardar Cambios" class="bg-blue-600 font-bold" />
-          <Button @click="onCancel" _texto="Cancelar" class="bg-gray-500 font-bold" />
+          <Button type="button" @click="onCancel" _texto="Cancelar" class="bg-gray-500 font-bold" />
         </div>
       </form>
     </div>
   </WrapperScreen>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+<script lang="ts" setup>
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import WrapperScreen from '../components/WrapperScreen.vue';
 import InputTexto from '../components/shared/InputTexto.vue';
+import Button from '../components/shared/Button.vue';
 import normalizeKeys from '../utils/normalizeKeys.ts';
-import type {Profile} from "../interfaces/Profile.ts";
+import type { Profile } from '../interfaces/Profile.ts';
+
 const urlBackend = import.meta.env.VITE_BACKEND_API_URL!;
-const nickname = localStorage.getItem('nickname')??"";
-const initialProfile = {
+const nickname = localStorage.getItem('nickname') ?? '';
+
+const errorMsg = ref('');
+const profile = ref<Profile>({
   id: '',
   nombre: '',
   apellido: '',
@@ -52,64 +56,51 @@ const initialProfile = {
   ubicacion: '',
   ocupacion: '',
   direccion: '',
-  contrasenia:'',
-  photoUrl:'',
+  contrasenia: '',
+  photoUrl: '',
+});
+
+const router = useRouter();
+
+const loadProfile = async () => {
+  try {
+    const res = await fetch(`${urlBackend}/api/v1/usuarioMysql/${nickname}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data: Profile = await res.json();
+    profile.value = normalizeKeys(data);
+  } catch (err) {
+    console.error('Error cargando perfil:', err);
+    errorMsg.value = 'No se pudo cargar el perfil.';
+  }
 };
 
+onMounted(loadProfile);
 
-export default defineComponent({
-  name: 'EditProfileView',
-  components: { WrapperScreen, InputTexto },
-  setup() {
-    const router = useRouter();
-    const errorMsg = ref('');
+const onSaveProfile = async () => {
+  try {
+    const res = await fetch(`${urlBackend}/api/v1/usuarioMysql`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profile.value)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    alert('Perfil actualizado correctamente.');
+    router.push({ name: 'Profile' });
+  } catch (err) {
+    console.error('Error actualizando perfil:', err);
+    errorMsg.value = 'Error al guardar los cambios.';
+  }
+};
 
-    const profile = ref<Profile>(initialProfile);
-    const loadProfile = async () => {
-      try {
-        const nick = localStorage.getItem('nickname');
-        if (!nick) throw new Error('No hay usuario autenticado');
+const onCancel = () => router.back();
 
-        const res = await fetch(`${urlBackend}/api/v1/usuarioMysql/${nickname}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data:Profile = await res.json();
-        profile.value = normalizeKeys(data);
-      } catch (err) {
-        console.error('Error cargando perfil:', err);
-        errorMsg.value = 'No se pudo cargar el perfil.';
-      }
-    };
-
-    const onSaveProfile = async () => {
-      try {
-       const request= profile.value
-        const res = await fetch(`${urlBackend}/api/v1/usuarioMysql`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(request)
-        });
-
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        alert('Perfil actualizado correctamente.');
-        router.push({ name: 'Profile' });
-      } catch (err) {
-        console.error('Error actualizando perfil:', err);
-        errorMsg.value = 'Error al guardar los cambios.';
-      }
-    };
-
-    const onCancel = () => router.back();
-
-    onMounted(loadProfile);
-
-    return {
-      profile,
-      errorMsg,
-      onSaveProfile,
-      onCancel
-    };
+const fechaNacimientoFormateada = computed({
+  get() {
+    if (!profile.value.fechaNacimiento) return '';
+    return profile.value.fechaNacimiento.split('T')[0];
+  },
+  set(value: string) {
+    profile.value.fechaNacimiento = value;
   }
 });
 </script>
