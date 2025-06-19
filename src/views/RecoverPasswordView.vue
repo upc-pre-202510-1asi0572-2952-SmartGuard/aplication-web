@@ -1,4 +1,3 @@
-<!-- src/views/RecoverPasswordView.vue -->
 <template>
   <section class="w-screen h-screen flex flex-col md:flex-row bg-gray-200 text-black overflow-auto">
 
@@ -34,7 +33,7 @@
           </span>
         </header>
 
-        <main class="flex flex-col gap-4">
+        <main class="flex flex-col gap-4 flex-1 overflow-y-auto">
           <form @submit.prevent="step === 1 ? submitEmail() : submitReset()">
 
             <!-- Paso 1: email -->
@@ -87,36 +86,65 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import InputTexto from '../components/shared/InputTexto.vue'
-import Button from '../components/shared/Button.vue'
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import InputTexto from '../components/shared/InputTexto.vue';
+import Button from '../components/shared/Button.vue';
 
-export default {
+export default defineComponent({
   name: 'RecoverPasswordView',
   components: { InputTexto, Button },
   setup() {
-    const router = useRouter()
-    const step = ref(1)
-    const email = ref('')
-    const code = ref('')
-    const newPassword = ref('')
-    const confirmPassword = ref('')
+    const router = useRouter();
+    const step = ref<number>(1);
+    const email = ref<string>('');
+    const code = ref<string>('');
+    const generatedCode = ref<string>('');
+    const userId = ref<number | null>(null);
+    const newPassword = ref<string>('');
+    const confirmPassword = ref<string>('');
 
     const submitEmail = async () => {
-      // Lógica: llamar API para enviar código al email
-      // await api.sendRecoveryCode({ email: email.value })
-      step.value = 2
-    }
+      if (!email.value) return alert('Ingresa un email válido.');
+      try {
+        const res = await fetch(`https://fake-api-smartguard.vercel.app/users?email=${email.value}`);
+        const users = await res.json();
+        if (!users.length) {
+          return alert('Email no registrado.');
+        }
+        userId.value = users[0].id;
+        generatedCode.value = Math.floor(100000 + Math.random() * 900000).toString();
+        alert(`Tu código de recuperación es: ${generatedCode.value}`);
+        step.value = 2;
+      } catch (err) {
+        console.error(err);
+        alert('Error al solicitar código de recuperación.');
+      }
+    };
 
     const submitReset = async () => {
-      if (newPassword.value !== confirmPassword.value) {
-        return alert('Las contraseñas no coinciden.')
+      if (code.value !== generatedCode.value) {
+        return alert('Código incorrecto.');
       }
-      // Lógica: llamar API para validar código y cambiar contraseña
-      // await api.resetPassword({ email: email.value, code: code.value, newPassword: newPassword.value })
-      await router.push('/login')
-    }
+      if (newPassword.value !== confirmPassword.value) {
+        return alert('Las contraseñas no coinciden.');
+      }
+      if (userId.value === null) {
+        return alert('Usuario no válido.');
+      }
+      try {
+        await fetch(`https://fake-api-smartguard.vercel.app/users/${userId.value}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: newPassword.value, confirmpassword: newPassword.value })
+        });
+        alert('Contraseña actualizada correctamente.');
+        router.push('/login');
+      } catch (err) {
+        console.error(err);
+        alert('Error al restablecer la contraseña.');
+      }
+    };
 
     return {
       step,
@@ -126,9 +154,11 @@ export default {
       confirmPassword,
       submitEmail,
       submitReset
-    }
+    };
   }
-}
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Ajustes específicos si los necesitas */
+</style>

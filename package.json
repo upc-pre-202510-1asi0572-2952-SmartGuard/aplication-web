@@ -10,6 +10,7 @@
     "serve:api": "json-server --watch api/db.json --port 3000"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
     "@primeuix/themes": "^1.1.1",
     "@tailwindcss/vite": "^4.1.5",
     "chart.js": "^4.4.9",
