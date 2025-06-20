@@ -129,7 +129,7 @@ async function confirmEnroll() {
     closeEnrollModal()
   } catch (err) {
     console.error('Error al inscribir miembro:', err)
-    alert('No se puede inscribir  al  miembro.')
+    alert('!Miembro ya asociado! no se puede inscribir al  miembro.')
   }
 }
 </script>

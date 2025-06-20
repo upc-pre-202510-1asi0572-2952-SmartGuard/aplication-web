@@ -112,7 +112,7 @@ export default defineComponent({
         await router.push({ name: 'Members' })
       } catch (err) {
         console.error(err)
-        alert('Error al agregar el miembro')
+        alert('Dni duplicado o informacion incorrecta al agregar el miembro')
       }
     }
 
