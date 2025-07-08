@@ -81,13 +81,12 @@ const initalMember={
   dni:''
 }
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
-const nickname = localStorage.getItem('nickname')??"";
 export default defineComponent({
   name: 'AddMemberView',
   components: {InputTexto},
   setup() {
     const router = useRouter()
-
+    const nickname = localStorage.getItem('nickname')??"";
     const member = ref<Member>(initalMember);
 
     const cancel = () => {
